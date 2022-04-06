@@ -22,7 +22,7 @@
                 {{item.titulo}}
               </v-card-title>
 
-              <v-card-subtitle>{{item.texto}}</v-card-subtitle>
+              <v-card-subtitle>{{item.enunciado}}</v-card-subtitle>
 
               <v-card-actions>
                   <v-dialog
@@ -82,7 +82,7 @@ export default {
   },
 
   data: () => ({
-    items: [
+    items2: [
         {
           titulo: 'Pares',
           texto: 'Llevar a cabo un programa en Python que compare 2 listas de números, revisando si la suma de cada número de la lista 1 con el de la lista 2 dan como resultado un número par. Lista 1: [1,2,3,4]. Lista 2: [1,2,2,1]',
@@ -100,9 +100,28 @@ export default {
           texto: 'Llevar a cabo un programa en Python que a partir de el día y mes de una persona, pueda entregar el signo zodiacal al cual pertenece esa persona',
         },
       ],
+    items: [],
     resultado:0,
     drawer: false,
     group: null,
   }),
-};
+  methods:{
+        //Función asíncrona para consultar los datos
+        getData: async function(){
+          try {
+              var result = await this.$http.get('/enunciados/all');
+              let response = result.data;
+              this.items = response;
+                
+                
+            }catch (error) {
+                console.log('error', error);
+            }
+        }
+    },
+    //Función que se ejecuta al cargar el componente
+    created:function(){
+        this.getData();
+    }
+}
 </script>

@@ -1,4 +1,5 @@
 <template>
+<div>
   <v-carousel v-model="model">
     <v-carousel-item
       v-for="(a, i) in colors"
@@ -21,12 +22,15 @@
       </v-sheet>
     </v-carousel-item>
   </v-carousel>
+  <h1>COSAS</h1>
+</div>
 </template>
 
 <script>
   export default {
     data: () => ({
       model: 0,
+      items: [],
       colors: [
         {
         titulo:'Variables',
@@ -53,6 +57,25 @@
         
       ],
     }),
+
+    methods:{
+        //Función asíncrona para consultar los datos
+        getData: async function(){
+          try {
+              var result = await this.$http.get('/usuarios/all');
+              let response = result.data;
+              this.items = response;
+                
+                
+            }catch (error) {
+                console.log('error', error);
+            }
+        }
+    },
+    //Función que se ejecuta al cargar el componente
+    created:function(){
+        this.getData();
+    }
   }
 </script>
 
