@@ -58,7 +58,7 @@
   <v-row align="center"
           justify="space-around"
           class="mt-6">
-          <v-col align="center"
+          <!--v-col align="center"
                 justify="space-around"
                 class="mt-6">
                 
@@ -95,13 +95,17 @@ return 0"
 10"
                 ></v-textarea>
                 
-        </v-col>
+        </v-col--><v-row>
+      <iframe src="https://trinket.io/embed/python/3d8d7ce66b" width="100%" height="356" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>
+      <iframe frameborder="0" width="100%" height="400px" src="https://create.withcode.uk/embed/7A"><a target="_blank" href="https://create.withcode.uk/python/7A">create.withcode.uk</a></iframe>
   </v-row>
-  <v-row>
+  </v-row>
+  <!--v-row>
       <v-btn class="primary" @click="resultado=1">
                 Ejecutar
         </v-btn>
-  </v-row>
+  </v-row--->
+  
 </v-container>
 </template>
 

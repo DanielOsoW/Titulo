@@ -4,7 +4,7 @@ import vuetify from './plugins/vuetify'
 import router from './router'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
-
+//import './skulpt-dist-master'
 Vue.config.productionTip = false
 
 const axiosInstance = axios.create({ 

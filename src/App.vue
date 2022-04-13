@@ -79,14 +79,50 @@
           </v-list-item>
           </router-link>
 
-          <router-link to="about">
+          <router-link to="/">
           <v-list-item>
             <v-list-item-icon>
               <v-icon>mdi-account</v-icon>
             </v-list-item-icon>
+            <v-list-item-title>Mi Cuenta</v-list-item-title>
+          </v-list-item>
+          </router-link>
+
+          <router-link to="about">
+          <v-list-item>
+            <v-list-item-icon>
+              <v-icon>mdi-file-multiple-outline</v-icon>
+            </v-list-item-icon>
             <v-list-item-title>Enunciados</v-list-item-title>
           </v-list-item>
           </router-link>
+
+          <router-link to="/">
+          <v-list-item>
+            <v-list-item-icon>
+              <v-icon>mdi-filter-check-outline</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Revisar Enunciados</v-list-item-title>
+          </v-list-item>
+          </router-link>
+
+          <router-link to="/">
+          <v-list-item>
+            <v-list-item-icon>
+              <v-icon>mdi-database-outline</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Datos</v-list-item-title>
+          </v-list-item>
+          </router-link>
+
+          <!--router-link to="prueba">
+          <v-list-item>
+            <v-list-item-icon>
+              <v-icon>mdi-account</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Prueba</v-list-item-title>
+          </v-list-item>
+          </router-link-->
 
           <!--router-link to="area">
           <v-list-item>
