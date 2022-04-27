@@ -5,10 +5,10 @@
             dark
           >
             <v-card-title class="text-h5">
-              Sumatoria
+              {{items.titulo}}
             </v-card-title>
 
-            <v-card-subtitle>Crear un programa en Python que lleva a cabo una sumatoria de 1 desde el 1 al 10</v-card-subtitle>
+            <v-card-subtitle>{{ items.enunciado }}.</v-card-subtitle>
 
             <v-card-actions>
                 <v-dialog
@@ -38,15 +38,27 @@
                                 color="error"
                             >Cancelar</v-btn>
 
-                            <router-link to="entregado"><v-btn
+                            <v-btn
+                                v-if="resultado==null || solucion==null || resultado=='' || solucion=='' "
                                 text
-                                @click="dialog.value = false"
+                                color="gray"
+                                @click="snackbar = true"
+                            >
+                            
+                            Entregar
+                            
+                            </v-btn>
+
+                            <v-btn
+                                v-else
+                                text
+                                @click="goToEntrega(items.id)"
                                 color="green"
                             >
                             
                             Entregar
                             
-                            </v-btn></router-link>
+                            </v-btn>
                             
                             </v-card-actions>
                         </v-card>
@@ -55,61 +67,51 @@
             </v-card-actions>
           </v-card>
 
-  <v-row align="center"
-          justify="space-around"
-          class="mt-6">
-          <!--v-col align="center"
-                justify="space-around"
-                class="mt-6">
-                
-                <v-textarea
-                    outlined
-                    name="input-7-4"
-                    label="Su código"
-                    value="suma=0
-i=0
-while i<10:
-    suma = suma+1
-return 0"
-                ></v-textarea>
-                
-        </v-col>
-  
+  <v-col align="center" justify="space-around" class="mt-6">
+        <v-row>
+            
+        </v-row>
+        <v-row>
+            <iframe src="https://trinket.io/embed/python/24179ee988" width="100%" height="356" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>
+        </v-row>
+        
+        <v-row>
+            
+            <v-col><h1>Solución:</h1>
+                <v-textarea v-model="solucion"></v-textarea>
+            </v-col>
+            <v-col>
+                <h1>Resultado Interprete:</h1>
+                <v-textarea v-model="resultado"></v-textarea>
+            </v-col>
+        </v-row>
+  </v-col>
 
-        <v-col align="center"
-                justify="space-around"
-                class="mt-6">
+  <v-snackbar
+      v-model="snackbar"
+    >
+      {{ text }}
 
-                <v-textarea v-if="resultado==0"
-                    outlined
-                    name="input-7-4"
-                    label="Resultado"
-                    value=""
-                ></v-textarea>
-                
-                <v-textarea v-if="resultado==1"
-                    outlined
-                    name="input-7-4"
-                    label="Resultado"
-                    value="Output:
-10"
-                ></v-textarea>
-                
-        </v-col--><v-row>
-      <iframe src="https://trinket.io/embed/python/3d8d7ce66b" width="100%" height="356" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>
-      <iframe frameborder="0" width="100%" height="400px" src="https://create.withcode.uk/embed/7A"><a target="_blank" href="https://create.withcode.uk/python/7A">create.withcode.uk</a></iframe>
-  </v-row>
-  </v-row>
-  <!--v-row>
-      <v-btn class="primary" @click="resultado=1">
-                Ejecutar
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="pink"
+          text
+          v-bind="attrs"
+          @click="snackbar = false"
+        >
+          Close
         </v-btn>
-  </v-row--->
+      </template>
+    </v-snackbar>
   
 </v-container>
+
 </template>
 
 <script>
+
+import {mapGetters} from 'vuex' 
+
 export default {
   name: 'App',
 
@@ -117,9 +119,48 @@ export default {
   },
 
   data: () => ({
-    resultado:0,
+    error: 0,
     drawer: false,
     group: null,
+    texto: null,
+    area: null,
+    items: null,
+    solucion: null,
+    resultado: null,
+    snackbar: false,
+    text: `Debes ingresar tu solución y la respuesta al enunciado`,
   }),
-};
+  
+  methods:{
+        //Función asíncrona para consultar los datos
+        getData: async function(){
+          try {
+              var result = await this.$http.get(this.$route.path);
+              let response = result.data;
+              this.items = response;
+                
+                
+            }catch (error) {
+                console.log('error', error);
+            }
+        },
+        goToEntrega(item) {
+            const enunciadoID = item;
+            this.$router.push({name:'entregado',params:{id:enunciadoID}});
+        },
+        handleClick() { 
+        this.$store.dispatch('user',null); 
+        this.$router.push('/'); 
+      }
+    },
+
+    computed: {
+        ...mapGetters(['user']) 
+    },
+    
+    //Función que se ejecuta al cargar el componente
+    created:function(){
+        this.getData();
+    }
+}
 </script>

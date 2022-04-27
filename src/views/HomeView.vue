@@ -1,5 +1,6 @@
 <template>
 <div>
+<div v-if="user">
   <v-carousel v-model="model">
     <v-carousel-item
       v-for="(a, i) in colors"
@@ -22,11 +23,18 @@
       </v-sheet>
     </v-carousel-item>
   </v-carousel>
-  <h1>COSAS</h1>
+  <h1>COSAS {{user}}</h1>
+</div>
+<div v-if="!user">
+  <h1> NADIE LOGUEADO </h1>
+</div>
 </div>
 </template>
 
 <script>
+
+import {mapGetters} from 'vuex' 
+
   export default {
     data: () => ({
       model: 0,
@@ -70,8 +78,18 @@
             }catch (error) {
                 console.log('error', error);
             }
+        },
+
+        handleClick() { 
+          this.$store.dispatch('user',null); 
+          this.$router.push('/'); 
         }
     },
+
+    computed: {
+      ...mapGetters(['user']) 
+    },
+
     //Función que se ejecuta al cargar el componente
     created:function(){
         this.getData();

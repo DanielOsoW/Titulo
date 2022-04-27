@@ -5,7 +5,7 @@
       color="blue lighten-3"
       dark
     >
-      <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon @click="drawer = true" v-if="user"></v-app-bar-nav-icon>
 
       <div class="d-flex align-center">
         <v-img
@@ -22,17 +22,31 @@
 
       <v-spacer></v-spacer>
 
-      <v-btn icon>
-        <v-icon>mdi-heart</v-icon>
-      </v-btn>
+      <div class="d-flex align-right">
+        <v-col>
+        <router-link to="/login">
+          <v-btn margin-right="200" v-if="!user" color="primary">
+          Ingresar
+        </v-btn>
+        </router-link>
+        </v-col>
+        <v-col>
+        <router-link to="/register">
+          <v-btn v-if="!user" color="orange">
+          Registrate
+        </v-btn>
+        </router-link>
+        </v-col>
+      </div>
 
-      <v-btn icon>
+      <v-btn icon v-if="user">
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
 
         <v-menu
           left
           bottom
+          v-if="user"
         >
           <template v-slot:activator="{ on, attrs }">
             <v-btn
@@ -45,12 +59,17 @@
           </template>
 
           <v-list>
-            <v-list-item
-              v-for="n in 5"
-              :key="n"
-              @click="() => {}"
-            >
-              <v-list-item-title>Option {{ n }}</v-list-item-title>
+            <v-list-item>
+              <v-list-item-title>{{ user.nombres }} {{user.apellido1}} {{user.apellido2}}</v-list-item-title>
+            </v-list-item>
+            <v-list-item @click="() => {}">
+              <v-list-item-title>Mis Datos</v-list-item-title>
+            </v-list-item>
+            <v-list-item @click="() => {}">
+              <v-list-item-title>Estadísticas</v-list-item-title>
+            </v-list-item>
+            <v-list-item @click="() => cerrar()">
+              <v-list-item-title>Cerrar sesión</v-list-item-title>
             </v-list-item>
           </v-list>
         </v-menu>
@@ -61,6 +80,7 @@
       v-model="drawer"
       absolute
       temporary
+      v-if="user"
     >
       <v-list
         nav
@@ -88,7 +108,7 @@
           </v-list-item>
           </router-link>
 
-          <router-link to="about">
+          <router-link to="/about">
           <v-list-item>
             <v-list-item-icon>
               <v-icon>mdi-file-multiple-outline</v-icon>
@@ -145,16 +165,49 @@
 
 <script>
 
+import {mapGetters} from 'vuex' 
+
 export default {
   name: 'App',
 
   components: {
   },
 
+  methods: {
+    handleClick() { 
+        this.$store.dispatch('user',null); 
+        this.$router.push('/'); 
+      },
+    cerrar() {
+        this.$store.dispatch('user',null);
+        this.$cookies.remove("tokken");
+        this.$router.push('/');
+        
+      },
+  },
+
+  computed: {
+    ...mapGetters(['user']) 
+  },
+
   data: () => ({
     //
     drawer: false,
     group: null,
+    options: [
+        {
+        titulo:'Mis Datos',
+        color:'primary',
+        },
+        {
+        titulo:'Estadísticas',
+        color:'secondary',
+        },
+        {
+        titulo:'Cerrar sesión',
+        color:'',
+        },
+      ],
   }),
 };
 </script>

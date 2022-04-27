@@ -3865,7 +3865,7 @@ process.umask = function() { return 0; };
 // http://sjs.mit-license.org
 //
 
-;(function() {
+(function() {
 
     var Locales = {
         de_DE: {
@@ -4766,13 +4766,13 @@ function binop_type_error(v, w, name) {
     const vtypename = Sk.abstr.typeName(v);
     const wtypename = Sk.abstr.typeName(w);
     throw new Sk.builtin.TypeError("unsupported operand type(s) for " + binop_name_to_symbol[name] + ": '" + vtypename + "' and '" + wtypename + "'");
-};
+}
 
 function biniop_type_error(v, w, name) {
     const vtypename = Sk.abstr.typeName(v);
     const wtypename = Sk.abstr.typeName(w);
     throw new Sk.builtin.TypeError("unsupported operand type(s) for " + binop_name_to_symbol[name] + "=: '" + vtypename + "' and '" + wtypename + "'");
-};
+}
 
 const uop_name_to_symbol = {
     UAdd: "+",
@@ -4782,7 +4782,7 @@ const uop_name_to_symbol = {
 function unop_type_error(v, name) {
     var vtypename = Sk.abstr.typeName(v);
     throw new Sk.builtin.TypeError("bad operand type for unary " + uop_name_to_symbol[name] + ": '" + vtypename + "'");
-};
+}
 
 /**
  * lookup and return the LHS object slot function method.  This could be either a builtin slot function or a dunder method defined by the user.
@@ -4827,7 +4827,7 @@ function boNameToSlotFuncLhs_(obj, name) {
         case "BitOr":
             return obj.nb$or;
     }
-};
+}
 
 function boNameToSlotFuncRhs_(obj, name) {
     switch (name) {
@@ -4862,7 +4862,7 @@ function boNameToSlotFuncRhs_(obj, name) {
         case "BitOr":
             return obj.nb$reflected_or;
     }
-};
+}
 
 function iboNameToSlotFunc_(obj, name) {
     switch (name) {
@@ -4895,7 +4895,7 @@ function iboNameToSlotFunc_(obj, name) {
         case "BitXor":
             return obj.nb$inplace_xor;
     }
-};
+}
 
 function uoNameToSlotFunc_(obj, name) {
     switch (name) {
@@ -4906,7 +4906,7 @@ function uoNameToSlotFunc_(obj, name) {
         case "Invert":
             return obj.nb$invert;
     }
-};
+}
 
 function binary_op_(v, w, opname) {
     // All Python inheritance is now enforced with Javascript inheritance
@@ -4956,7 +4956,7 @@ function binary_op_(v, w, opname) {
         }
     }
 
-};
+}
 
 function binary_iop_(v, w, opname) {
     const vop = iboNameToSlotFunc_(v, opname);
@@ -4968,14 +4968,14 @@ function binary_iop_(v, w, opname) {
     }
     // If there wasn't an in-place operation, fall back to the binop
     return binary_op_(v, w, opname);
-};
+}
 
 function unary_op_(v, opname) {
     const vop = uoNameToSlotFunc_(v, opname);
     if (vop !== undefined) {
         return vop.call(v);
     }
-};
+}
 
 /**
  * @function
@@ -9382,7 +9382,7 @@ function astForStmt (c, n) {
                 Sk.asserts.assert("unhandled compound_stmt");
         }
     }
-};
+}
 
 Sk.astFromParse = function (n, filename, c_flags) {
     var j;
@@ -17494,7 +17494,7 @@ function quick$lookup(pyName) {
         return item[1];
     }
     return;
-};
+}
 
 /**
  * NB:
@@ -17531,7 +17531,7 @@ function get$bucket_item(key, hash_value) {
         }
     }
     return;
-};
+}
 
 /**
  * @function
@@ -17565,7 +17565,7 @@ function pop$bucket_item(key, hash_value) {
         }
     }
     return;
-};
+}
 
 /**
  * @function
@@ -17599,7 +17599,7 @@ function set$bucket_item(key, value, hash_value) {
         }
     }
     this.entries[key_hash] = item;
-};
+}
 
 /**
  * @function
@@ -17623,7 +17623,7 @@ function mp$lookup(key) {
     }
     // Not found in dictionary
     return undefined;
-};
+}
 
 /**
  * @function
@@ -17662,7 +17662,7 @@ function dict$merge(b) {
             )
         );
     }
-};
+}
 
 /**
  * @function
@@ -17702,7 +17702,7 @@ function update$common(args, kwargs, func_name) {
         }
         return;
     });
-};
+}
 
 /**
  * @function
@@ -17729,7 +17729,7 @@ function dict$merge_seq(arg) {
         this.set$item(seq[0], seq[1]);
         idx++;
     });
-};
+}
 
 /**
  * @function
@@ -17765,7 +17765,7 @@ function set$item(key, value) {
             item[1] = value;
         }
     }
-};
+}
 
 /**
  * @function
@@ -17793,7 +17793,7 @@ function pop$item(key) {
     }
     // Not found in dictionary
     return undefined;
-};
+}
 
 
 /******** Start of Dict Views ********/
@@ -20280,7 +20280,7 @@ let formatNumber = function(num, formatSpec, isFractional) {
                 throw new Sk.builtin.ValueError("Cannot specify ',' with 'c'");
             }
             return handleWidth(m, String.fromCodePoint(Sk.builtin.asnum$(num)), "", true);
-        };
+        }
 
         case "f":
         case "F":
@@ -20337,7 +20337,7 @@ let formatNumber = function(num, formatSpec, isFractional) {
             }
 
             return handleWidth(m, result, signForNeg(m, neg), true);
-        };
+        }
 
         case "%": {
             if (m[FMT.ALT_FORM]) {
@@ -20364,7 +20364,7 @@ let formatNumber = function(num, formatSpec, isFractional) {
             let precision = m[FMT.PRECISION] ? parseInt(m[FMT.PRECISION], 10) : 6;
             let result = (convValue*100.0).toFixed(precision) + "%";
             return handleWidth(m, result, signForNeg(m, neg), true);
-        };
+        }
 
         default:
             throw new Sk.builtin.ValueError("Unknown format code '" + m[FMT.CONVERSION_TYPE] + "'");
@@ -20406,7 +20406,7 @@ function formatString(format_spec) {
     }
 
     return new Sk.builtin.str(handleWidth(m, value, "", false));
-};
+}
 
 // str.format() implementation
 function format(args, kwargs) {
@@ -20475,11 +20475,11 @@ function format(args, kwargs) {
         // TODO "!a" I guess?
 
         return Sk.abstr.objectFormat(value, new Sk.builtin.str(format_spec)).$jsstr();
-    };
+    }
 
     const ret = this.v.replace(regex, replFunc);
     return new Sk.builtin.str(ret);
-};
+}
 
 Sk.formatting.format = format;
 Sk.formatting.formatString = formatString;
@@ -20788,7 +20788,7 @@ function $resolveArgs(posargs, kw) {
     }
 
     return args;
-};
+}
 
 
 
@@ -22180,7 +22180,7 @@ function numberSlot(number_func, bigint_func) {
             return new Sk.builtin.int_(bigint_func(v, w));
         }
         return Sk.builtin.NotImplemented.NotImplemented$;
-    };
+    }
     return doNumberSlot;
 }
 
@@ -22218,7 +22218,7 @@ function numberUnarySlot(number_func, bigint_func) {
             return new Sk.builtin.int_(number_func(v));
         }
         return new Sk.builtin.int_(bigint_func(v));
-    };
+    }
     return doUnarySlot;
 }
 
@@ -23093,7 +23093,7 @@ function list$sort(cmp, key, reverse) {
     }
 
     return Sk.builtin.none.none$;
-};
+}
 
 Sk.builtin.list.py2$methods = {
     sort: {
@@ -23707,7 +23707,7 @@ function asIndex(index) {
     } else if (typeof index === "number" && Number.isInteger(index)) {
         return index;
     }
-};
+}
 
 function asIndexOrThrow(index, msg) {
     const i = asIndex(index);
@@ -31085,7 +31085,7 @@ function strBytesRemainder(rhs) {
     };
     ret = this.$jsstr().replace(regex, replFunc);
     return new strBytesConstructor(ret);
-};
+}
 
 /**
  * @constructor
@@ -33894,7 +33894,7 @@ function _tokenize(filename, readline, encoding, yield_) {
                     column = 0
                 } else {
                     break;
-                };
+                }
                 pos += 1
             }
 

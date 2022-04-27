@@ -52,15 +52,15 @@
                                 color="error"
                             >Cancelar</v-btn>
 
-                            <router-link to="area"><v-btn
+                            <v-btn
                                 text
-                                @click="dialog.value = false"
+                                @click="goToEnunciado(item.id)"
                                 color="green"
                             >
                             
                             Iniciar
                             
-                            </v-btn></router-link>
+                            </v-btn>
                             
                             </v-card-actions>
                         </v-card>
@@ -75,6 +75,9 @@
 </template>
 
 <script>
+
+import {mapGetters} from 'vuex' 
+
 export default {
   name: 'App',
 
@@ -82,24 +85,6 @@ export default {
   },
 
   data: () => ({
-    items2: [
-        {
-          titulo: 'Pares',
-          texto: 'Llevar a cabo un programa en Python que compare 2 listas de números, revisando si la suma de cada número de la lista 1 con el de la lista 2 dan como resultado un número par. Lista 1: [1,2,3,4]. Lista 2: [1,2,2,1]',
-        },
-        {
-          titulo: 'Sumatoria',
-          texto: 'Crear un programa en Python que lleva a cabo una sumatoria de 1 desde el 1 al 10',
-        },
-        {
-          titulo: 'Encuentra palabra',
-          texto: 'Llevar a cabo un programa en Python que busque una palabra específica en un texto, y retorne si la palabra existe en el mismo y la cantidad de veces que aparece',
-        },
-        {
-          titulo: 'Signos',
-          texto: 'Llevar a cabo un programa en Python que a partir de el día y mes de una persona, pueda entregar el signo zodiacal al cual pertenece esa persona',
-        },
-      ],
     items: [],
     resultado:0,
     drawer: false,
@@ -117,8 +102,23 @@ export default {
             }catch (error) {
                 console.log('error', error);
             }
-        }
+        },
+
+        goToEnunciado(item) {
+          const enunciadoID = item;
+          this.$router.push({name:'area',params:{id:enunciadoID}});
+        },
+
+        handleClick() { 
+        this.$store.dispatch('user',null); 
+        this.$router.push('/'); 
+      }
     },
+
+    computed: {
+      ...mapGetters(['user']) 
+    },
+    
     //Función que se ejecuta al cargar el componente
     created:function(){
         this.getData();

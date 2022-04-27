@@ -19,10 +19,10 @@
             dark
           >
             <v-card-title class="text-h5">
-              Sumatoria
+              {{ items.titulo }}
             </v-card-title>
 
-            <v-card-subtitle>Crear un programa en Python que lleva a cabo una sumatoria de 1 desde el 1 al 10</v-card-subtitle>
+            <v-card-subtitle>{{ items.enunciado }}</v-card-subtitle>
 
             <v-card-actions>
                 <v-btn text class="success" disabled>
@@ -39,7 +39,7 @@
                 justify="space-around"
                 class="mt-6">
                 
-                <router-link to="about">
+                <router-link to="/about">
                 <v-btn
                     depressed
                     color="blue lighten-3"
@@ -51,3 +51,53 @@
   </v-row>
 </v-container>
 </template>
+
+<script>
+
+import {mapGetters} from 'vuex' 
+
+export default {
+  name: 'App',
+
+  components: {
+  },
+
+  data: () => ({
+    resultado:0,
+    drawer: false,
+    group: null,
+    texto: null,
+    area: null,
+    items: null,
+  }),
+  
+  methods:{
+        //Función asíncrona para consultar los datos
+        getData: async function(){
+          try {
+              var result = await this.$http.get(this.$route.path);
+              let response = result.data;
+              this.items = response;
+                
+                
+            }catch (error) {
+                console.log('error', error);
+            }
+        },
+        
+        handleClick() { 
+          this.$store.dispatch('user',null); 
+          this.$router.push('/'); 
+        }
+    },
+
+    computed: {
+      ...mapGetters(['user']) 
+    },
+    
+    //Función que se ejecuta al cargar el componente
+    created:function(){
+        this.getData();
+    }
+}
+</script>

@@ -4,6 +4,8 @@ import vuetify from './plugins/vuetify'
 import router from './router'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+import store from './store'
+import VueCookies from 'vue-cookies';
 //import './skulpt-dist-master'
 Vue.config.productionTip = false
 
@@ -16,10 +18,13 @@ Vue.prototype.$http = axiosInstance;
 
 axios.defaults.headers.common['Authorization'] = 'Bearer' + localStorage.getItem('token');
 
+Vue.use(VueCookies);
+Vue.$cookies.config({httpOnly: true})
 new Vue({
   vuetify,
   router,
   axios,
   VueAxios,
+  store,
   render: h => h(App)
 }).$mount('#app')
