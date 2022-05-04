@@ -5,8 +5,8 @@ import router from './router'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import store from './store'
-import VueCookies from 'vue-cookies';
-//import './skulpt-dist-master'
+import VueCookies from 'vue-cookies'
+import Sk from '../../skulpt'
 Vue.config.productionTip = false
 
 const axiosInstance = axios.create({ 
@@ -26,5 +26,6 @@ new Vue({
   axios,
   VueAxios,
   store,
+  Sk,
   render: h => h(App)
 }).$mount('#app')
