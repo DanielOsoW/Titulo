@@ -1,3 +1,6 @@
+<script type="application/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<script type="application/javascript" src="http://skulpt.org/js/skulpt.min.js"></script>
+<script type="application/javascript" src="http://skulpt.org/js/skulpt-stdlib.js"></script>
 <template>
 <v-container>
     <v-card
@@ -68,6 +71,7 @@
           </v-card>
 
   <v-col align="center" justify="space-around" class="mt-6">
+
         <v-row>
             <v-form> 
             <textarea id="yourcode" cols="40" rows="10">
@@ -125,9 +129,7 @@
 </template>
 
 <script>
-import Sk from "../../../skulpt"
-import {mapGetters} from 'vuex' 
-
+import {mapGetters} from 'vuex'
 export default {
   name: 'App',
 
@@ -146,17 +148,6 @@ export default {
     snackbar: false,
     text: `Debes ingresar tu solución y la respuesta al enunciado`,
   }),
-  mounted() {
-      let recaptchaScript = document.createElement('script1')
-      recaptchaScript.setAttribute('src', 'https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js')
-      document.head.appendChild(recaptchaScript)
-      let recaptchaScript2 = document.createElement('script2')
-      recaptchaScript2.setAttribute('src', 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/255806/skulpt.min.js')
-      document.head.appendChild(recaptchaScript2)
-      let recaptchaScript3 = document.createElement('script3')
-      recaptchaScript3.setAttribute('src', 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/255806/skulpt-stdlib.js')
-      document.head.appendChild(recaptchaScript3)
-    },
   methods:{
         //Función asíncrona para consultar los datos
         getData: async function(){
@@ -187,13 +178,13 @@ export default {
         
       },
 
-      // output functions are configurable.  This one just appends some text
+      /*// output functions are configurable.  This one just appends some text
       // to a pre element.
-      outf(text) { 
+      outf(text){ 
           var mypre = document.getElementById("output"); 
           mypre.innerHTML = mypre.innerHTML + text; 
       }, 
-      builtinRead(x) {
+      builtinRead(x){
           if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined)
                   throw "File not found: '" + x + "'";
           return Sk.builtinFiles["files"][x];
@@ -204,30 +195,24 @@ export default {
       // get a reference to your pre element for output
       // configure the output function
       // call Sk.importMainWithBody()
-      runit() { 
-        var prog = document.getElementById("yourcode").value;
-        this.solucion = prog; 
+      runit(){ 
+        var prog = document.getElementById("yourcode").value; 
         var mypre = document.getElementById("output"); 
-        mypre.innerHTML = 'A'; 
-        Sk.canvas = "mycanvas";
+        mypre.innerHTML = ''; 
         Sk.pre = "output";
         Sk.configure({output:this.outf(), read:this.builtinRead()}); 
-        try {
-            eval(Sk.importMainWithBody("<stdin>",false,prog)); 
-        }
-        catch(e) {
-            alert(e.toString())
-        }
-      }, 
+        var myPromise = Sk.misceval.asyncToPromise(function() {
+            return Sk.importMainWithBody("<stdin>", false, prog, true);
+        });
+        myPromise.then(function(mod) {
+            console.log('success');
+        },
+            function(err) {
+            console.log(err.toString());
+        });
+    },*/ 
     },
 
-    watch:{
-      isVisible: function(){
-        setTimeout( () => {
-          this.solucion = this.$el.getElementsByClassName('ace_layer ace_marker-layer')[0].scrollIntoView();
-          }, 250)
-          }
-          },
     computed: {
         ...mapGetters(['user']) 
     },
@@ -235,7 +220,6 @@ export default {
     //Función que se ejecuta al cargar el componente
     created:function(){
         this.getData();
-        this.isVisible();
     }
 }
 </script>
