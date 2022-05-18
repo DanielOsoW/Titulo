@@ -1,6 +1,6 @@
 <template>
 <div>
-<div v-if="user">
+<div v-if="user || checkInvitado">
   <v-carousel v-model="model">
     <v-carousel-item
       v-for="(a, i) in colors"
@@ -25,8 +25,25 @@
   </v-carousel>
   <h1>COSAS {{user}}</h1>
 </div>
-<div v-if="!user">
-  <h1> NADIE LOGUEADO </h1>
+<div v-if="!user && !checkInvitado">
+  <br><br><br><br><br>
+  <v-container class="center">
+    <v-row>
+      <v-col>
+        <router-link to="/login">
+          <v-btn color="primary" class="center" block elevation="12" x-large >
+            Ingresar con usuario
+          </v-btn>
+        </router-link>
+      </v-col>
+      <v-col>
+          <v-btn color="secondary" class="center" block elevation="12" x-large @click="checkInvitado=true,handleClick()">
+              Ingresar como Invitado
+          </v-btn>
+      </v-col>
+    </v-row>
+    
+  </v-container>
 </div>
 </div>
 </template>
@@ -39,6 +56,10 @@ import {mapGetters} from 'vuex'
     data: () => ({
       model: 0,
       items: [],
+      checkInvitado: false,
+      invitado: {
+        nombres:"invitado"
+      },
       colors: [
         {
         titulo:'Variables',
@@ -80,8 +101,8 @@ import {mapGetters} from 'vuex'
             }
         },
 
-        handleClick() { 
-          this.$store.dispatch('user',null); 
+        async handleClick() { 
+          this.$store.dispatch('user',this.invitado); 
           this.$router.push('/'); 
         }
     },

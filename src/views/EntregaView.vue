@@ -39,7 +39,7 @@
                 justify="space-around"
                 class="mt-6">
                 
-                <router-link to="/about">
+                <router-link to="/enunciados">
                 <v-btn
                     depressed
                     color="blue lighten-3"

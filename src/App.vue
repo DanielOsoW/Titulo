@@ -108,7 +108,7 @@
           </v-list-item>
           </router-link>
 
-          <router-link to="/about">
+          <router-link to="/enunciados">
           <v-list-item>
             <v-list-item-icon>
               <v-icon>mdi-file-multiple-outline</v-icon>

@@ -1,6 +1,3 @@
-<script type="application/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
-<script type="application/javascript" src="http://skulpt.org/js/skulpt.min.js"></script>
-<script type="application/javascript" src="http://skulpt.org/js/skulpt-stdlib.js"></script>
 <template>
 <v-container>
     <v-card
@@ -23,6 +20,7 @@
                         color="primary"
                         v-bind="attrs"
                         v-on="on"
+                        @click="lines()"
                     >Entregar Solución</v-btn>
                     </template>
                     <template v-slot:default="dialog">
@@ -73,36 +71,39 @@
   <v-col align="center" justify="space-around" class="mt-6">
 
         <v-row>
-            <v-form> 
-            <textarea id="yourcode" cols="40" rows="10">
-            print("Hello World") 
-            </textarea><br /> 
-            <v-btn type="button" @click="runit()">Run</v-btn> 
-            </v-form> 
-            <pre id="output" ></pre> 
+          <v-btn type="button" @click="cleanOut(),runit2()">Run</v-btn> 
         </v-row>
-
         <v-row>
-            <iframe src="https://trinket.io/embed/python/24179ee988" width="100%" height="356" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>
+            <v-form> 
+            <v-textarea id="yourcode" cols="80" rows="10" background-color="amber lighten-4" color="orange orange-darken-4" label="Tu código" @change="contador()">
+                print("Hello World") 
+            </v-textarea><br /> 
+            
+            </v-form> 
+            <v-textarea id="output" disabled cols="20" rows="10" background-color="grey lighten-2" color="cyan" label=""> 
+            </v-textarea>
+        </v-row>
+        <v-row>
+          <div> {{ dataset }} {{largoNuevo}} {{lineas}}</div>
         </v-row>
         
         <v-row>
             
             <v-col><h1>Solución:</h1>
-                <v-textarea v-model="$el"></v-textarea>
+                <v-textarea v-model="solucion"></v-textarea>
             </v-col>
             <v-col>
                 <h1>Resultado Interprete:</h1>
-                <v-textarea v-model="solucion"></v-textarea>
+                <v-textarea v-model="resultado"></v-textarea>
             </v-col>
         </v-row>
         <v-row>
           <v-btn
+            id="get"
             text
-            @click="getInfo()"
-            color="green"
+            @click="getOutput()"
+            color="white"
           >
-            info
           </v-btn>
         </v-row>
   </v-col>
@@ -130,13 +131,16 @@
 
 <script>
 import {mapGetters} from 'vuex'
+import { run } from '@programmingplus/pyjs';
 export default {
+  
   name: 'App',
-
+  
   components: {
   },
 
   data: () => ({
+    idData:0,
     error: 0,
     drawer: false,
     group: null,
@@ -144,15 +148,73 @@ export default {
     area: null,
     items: null,
     solucion: null,
-    resultado: null,
+    resultado: '',
     snackbar: false,
     text: `Debes ingresar tu solución y la respuesta al enunciado`,
+    largoAnterior: 0,
+    largoNuevo: 0,
+    lineas: 0,
+    cambio: {},
+    dataset:{
+      id_enunciado: 0,
+      id_estudiante: null,
+      solucion: "",
+      resultado: "",
+      fecha_termino: "",
+      nro_errores: 0,
+      module_error: 0,
+      name_error: 0,
+      identation_error: 0,
+      index_error: 0,
+      syntax_error: 0,
+      type_error: 0,
+      value_error: 0,
+      nro_lineas: 0,
+      nro_ediciones:0,
+      nro_compilaciones:0
+    },
+    errores:{
+        module: "ModuleNotFoundError",
+        name: "NameError",
+        identation: "IndentationError",
+        index: "IndexError",
+        syntax: "SyntaxError",
+        type: "TypeError",
+        value: "ValueError"
+    }
   }),
   methods:{
         //Función asíncrona para consultar los datos
         getData: async function(){
           try {
-              var result = await this.$http.get(this.$route.path);
+              var ruta = this.$route.path;
+              var largo = ruta.length;
+              var nuevaRuta = "";
+              var contador = 0;
+              for (var i = 0; i < largo; i++){
+                if(ruta[i]=="/" && contador == 2){
+                  i = largo+1;
+                }
+                else if(ruta[i]=="/" && contador < 2){
+                  nuevaRuta = nuevaRuta + ruta[i];
+                  contador = contador + 1;
+                }
+                else{
+                  nuevaRuta = nuevaRuta + ruta[i];
+                }
+              }
+              contador = 0;
+              var dataID = "";
+              for (var j = 0; j < largo; j++){
+                if (ruta[j]=="/"){
+                  contador = contador+1
+                }
+                else if(ruta[j]!="/" && contador == 3){
+                  dataID = dataID + ruta[j];
+                }
+              }
+              this.idData = parseInt(dataID);
+              var result = await this.$http.get(nuevaRuta);
               let response = result.data;
               this.items = response;
                 
@@ -161,65 +223,105 @@ export default {
                 console.log('error', error);
             }
         },
-        goToEntrega(item) {
-            const enunciadoID = item;
-            this.$router.push({name:'entregado',params:{id:enunciadoID}});
+        goToEntrega: async function() {
+            var today = new Date();
+            var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+            var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+            var dateTime = date+' '+time;
+            this.dataset.fecha_termino = dateTime;
+
+            var result2 = await this.$http.put('datos/'+this.idData,this.dataset);
+            let response2 = result2.data;
+            this.cambio = response2;
+            this.$router.push({name:'entregado',params:{id:this.items.id}});
         },
         handleClick() { 
         this.$store.dispatch('user',null); 
         this.$router.push('/'); 
-      },
-      getInfo() { 
-        const collection = document.getElementsByClassName("ace_layer ace_marker-layer")[1];
-        this.solucion = collection;
-        const collection2 = document.getElementsByClassName("__web-inspector-hide-shortcut__")[1];
-        this.resultado = collection2;
-
-        
-      },
-
-      /*// output functions are configurable.  This one just appends some text
-      // to a pre element.
-      outf(text){ 
-          var mypre = document.getElementById("output"); 
-          mypre.innerHTML = mypre.innerHTML + text; 
-      }, 
-      builtinRead(x){
-          if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined)
-                  throw "File not found: '" + x + "'";
-          return Sk.builtinFiles["files"][x];
-      },
-
-      // Here's everything you need to run a python program in skulpt
-      // grab the code from your textarea
-      // get a reference to your pre element for output
-      // configure the output function
-      // call Sk.importMainWithBody()
-      runit(){ 
-        var prog = document.getElementById("yourcode").value; 
-        var mypre = document.getElementById("output"); 
-        mypre.innerHTML = ''; 
-        Sk.pre = "output";
-        Sk.configure({output:this.outf(), read:this.builtinRead()}); 
-        var myPromise = Sk.misceval.asyncToPromise(function() {
-            return Sk.importMainWithBody("<stdin>", false, prog, true);
-        });
-        myPromise.then(function(mod) {
-            console.log('success');
         },
-            function(err) {
-            console.log(err.toString());
-        });
-    },*/ 
+
+        cleanOut: async function(){
+          document.getElementById("output").value = '';
+        },
+        runit2: async function(){
+          const output = (s) => (document.getElementById("output").value += s);
+          await run(document.getElementById("yourcode").value, { writeStdout: output, writeStderr: output });
+          document.getElementById("get").click();
+        },
+        
+        getOutput(){
+          this.resultado = document.getElementById("output").value;
+          this.solucion = document.getElementById("yourcode").value;
+          this.dataset.nro_compilaciones = this.dataset.nro_compilaciones + 1;
+          var result = this.resultado.includes(this.errores.module);
+          if (result){
+            this.dataset.nro_errores = this.dataset.nro_errores + 1;
+            this.dataset.module_error = this.dataset.module_error + 1;
+          } 
+          result = this.resultado.includes(this.errores.name);
+          if (result){
+            this.dataset.nro_errores = this.dataset.nro_errores + 1;
+            this.dataset.name_error = this.dataset.name_error + 1;
+          }
+          result = this.resultado.includes(this.errores.identation);
+          if (result){
+            this.dataset.nro_errores = this.dataset.nro_errores + 1;
+            this.dataset.identation_error = this.dataset.identation_error + 1;
+          }
+          result = this.resultado.includes(this.errores.index);
+          if (result){
+            this.dataset.nro_errores = this.dataset.nro_errores + 1;
+            this.dataset.index_error = this.dataset.index_error + 1;
+          }
+          result = this.resultado.includes(this.errores.syntax);
+          if (result){
+            this.dataset.nro_errores = this.dataset.nro_errores + 1;
+            this.dataset.syntax_error = this.dataset.syntax_error + 1;
+          }
+          result = this.resultado.includes(this.errores.type);
+          if (result){
+            this.dataset.nro_errores = this.dataset.nro_errores + 1;
+            this.dataset.type_error = this.dataset.type_error + 1;
+          }
+          result = this.resultado.includes(this.errores.value);
+          if (result){
+            this.dataset.nro_errores = this.dataset.nro_errores + 1;
+            this.dataset.value_error = this.dataset.value_error + 1;
+          }
+        },
+        contador(){
+          this.largoNuevo = document.getElementById("yourcode").value.length;
+          if(this.largoNuevo!=this.largoAnterior){
+            this.dataset.nro_ediciones = this.dataset.nro_ediciones + 1;
+          }
+          this.largoAnterior = this.largoNuevo;
+        },
+        lines(){
+          var codigo = document.getElementById("yourcode").value;
+          var iter = codigo.length;
+          this.lineas = 1;
+          for(var i = 0; i < iter; i++){
+            if(codigo[i] == '\n' && codigo[i-1] != '\n' && i+1 !=iter){
+              this.lineas = this.lineas + 1;
+            }
+          }
+          if(this.user.nombres != "invitado"){
+            this.dataset.id_estudiante = this.user.id;
+          }
+          this.dataset.id_enunciado = this.items.id;
+          this.dataset.solucion = document.getElementById("yourcode").value;
+          this.dataset.resultado = document.getElementById("output").value;
+        }
+      
     },
 
     computed: {
-        ...mapGetters(['user']) 
+        ...mapGetters(['user'])
     },
     
     //Función que se ejecuta al cargar el componente
     created:function(){
-        this.getData();
+        this.getData(); 
     }
 }
 </script>

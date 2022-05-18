@@ -13,15 +13,15 @@ export default new VueRouter({
       component: HomeView
     },
     {
-      path: '/about',
-      name: 'about',
+      path: '/enunciados',
+      name: 'enunciados',
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+      component: () => import(/* webpackChunkName: "enunciados" */ '../views/EnunciadosView.vue')
     },
     {
-      path: '/area/:id',
+      path: '/area/:id1/:id2',
       name: 'area',
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
