@@ -63,6 +63,15 @@ export default new VueRouter({
       // which is lazy-loaded when the route is visited.
       component: () => import(/* webpackChunkName: "error" */ '../views/errorView.vue')
     },
+
+    {
+      path: '/data',
+      name: 'data',
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import(/* webpackChunkName: "data" */ '../views/DataView.vue')
+    },
     //{
     //  path: '/prueba',
     //  name: 'prueba',

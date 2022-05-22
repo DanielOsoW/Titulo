@@ -126,7 +126,7 @@
           </v-list-item>
           </router-link>
 
-          <router-link to="/">
+          <router-link to="/data">
           <v-list-item>
             <v-list-item-icon>
               <v-icon>mdi-database-outline</v-icon>
