@@ -36,7 +36,24 @@
               required
             ></v-text-field>
 
-         <v-text-field
+        <v-text-field
+              class= "d-flex pa-2"
+              v-model="edad"
+              :rules="edadRules"
+              label="Edad"
+              required
+        ></v-text-field>
+
+        <v-select
+              class= "d-flex pa-2" 
+              v-model="sexo"
+              :items="sexos"
+              :rules="sexoRules"
+              label="Sexo"
+              required
+          ></v-select>
+
+        <v-text-field
               class= "d-flex pa-2"
               v-model="correo"
               :rules="emailRules"
@@ -76,30 +93,32 @@
         ></v-select>
 
         <div>{{cantiCarreras}}{{allCarreras}}</div-->
-        <div>{{nombres}}{{apellido1}}{{apellido2}}{{correo}}{{nueva2}}</div>
+        <div>{{nombres}}{{apellido1}}{{apellido2}}{{correo}}{{nueva1}}{{nueva2}}{{edad}}{{sexo}}</div>
 
+        
         <v-btn
-        color="success"
-        class="mr-4"
-        @click="register()"
+          :disabled="!valid"
+          color="success"
+          class="mr-4"
+          @click="validate,register()"
         >
-        Validate
+          Registrarse
         </v-btn>
 
         <v-btn
         color="error"
-        class="mr-4"
+        class="mr-4 center"
         @click="reset"
         >
-        Reset Form
+        Borrar Formulario
         </v-btn>
 
-        <v-btn
+        <!--v-btn
         color="warning"
         @click="resetValidation"
         >
         Reset Validation
-        </v-btn>
+        </v-btn-->
     </v-form>
 </v-container>
 </template>
@@ -114,6 +133,8 @@
         nueva1: null,
         nueva2: null,
         carrera: null,
+        edad: null,
+        sexo:"",
         cantiCarreras: null,
         allCarreras: [],
         showPassword1:false,
@@ -136,13 +157,26 @@
         nuevaRules: [
           v => !!v || 'Debes ingresar la nueva contraseña',
           v => (v && v.length >= 12) || 'La contraseña debe contener más de 12 caracteres',
-        ],     
+        ],
+        edadRules: [
+          v => !!v || 'Edad requerida',
+          v => (v && v > 10 && v < 100) || 'Edad inválida',
+        ],
+        sexoRules: [
+          v => !!v || 'Sexo requerido',
+          v => (v != null) || 'Sexo requerido',
+        ],      
         select: null,
         carreras: [],
         checkbox: false,
         usuario: null,
         texto1: null,
         valid1: false,
+        sexos: [
+        'Femenino',
+        'Masculino',
+        'Prefiero no decirlo'
+      ],
     }),
 
     methods: {
@@ -188,7 +222,7 @@
                 let response2 = result.data;
                 this.usuario = response2.data;
                 this.texto1='Información editada con éxito';
-                this.$router.push('/')
+                this.$router.push('/login')
             } catch (error) {
                 console.log('error', error);
             }

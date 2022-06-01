@@ -53,7 +53,7 @@
                             <v-btn
                                 v-else
                                 text
-                                @click="goToEntrega(items.id)"
+                                @click="goToQuest(items.id)"
                                 color="green"
                             >
                             
@@ -71,19 +71,19 @@
   <v-col align="center" justify="space-around" class="mt-6">
 
         <v-row>
-          <v-btn type="button" @click="cleanOut(),runit2()">Run</v-btn> 
+          <v-btn type="button" @click="cleanOut(),runit2()">Ejecutar</v-btn> 
         </v-row>
         <v-row>
             <v-form> 
-            <v-textarea id="yourcode" cols="80" rows="10" background-color="amber lighten-4" color="orange orange-darken-4" label="Tu código" @change="contador()">
+            <v-textarea id="yourcode" class="pa-4" cols="80" rows="10" outlined background-color="white" color="orange orange-darken-4" label="Tu código" @change="contador()">
                 print("Hello World") 
             </v-textarea><br /> 
             
             </v-form> 
-            <v-textarea id="output" disabled cols="20" rows="10" background-color="grey lighten-2" color="cyan" label=""> 
+            <v-textarea id="output" class="my-textarea pa-4" outlined disabled cols="20" rows="10" background-color="black" color="cyan" label=""> 
             </v-textarea>
         </v-row>
-        <v-row>
+        <!--v-row>
           <div> {{ dataset }} {{largoNuevo}} {{lineas}}</div>
         </v-row>
         
@@ -96,7 +96,7 @@
                 <h1>Resultado Interprete:</h1>
                 <v-textarea v-model="resultado"></v-textarea>
             </v-col>
-        </v-row>
+        </v-row-->
         <v-row>
           <v-btn
             id="get"
@@ -158,6 +158,8 @@ export default {
     dataset:{
       id_enunciado: 0,
       id_estudiante: null,
+      sexo:null,
+      edad:0,
       solucion: "",
       resultado: "",
       fecha_termino: "",
@@ -223,17 +225,17 @@ export default {
                 console.log('error', error);
             }
         },
-        goToEntrega: async function() {
+        goToQuest: async function() {
             var today = new Date();
             var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-            var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+            var time = today.getUTCHours() + ":" + today.getMinutes() + ":" + today.getSeconds();  
             var dateTime = date+' '+time;
             this.dataset.fecha_termino = dateTime;
 
             var result2 = await this.$http.put('datos/'+this.idData,this.dataset);
             let response2 = result2.data;
             this.cambio = response2;
-            this.$router.push({name:'entregado',params:{id:this.items.id}});
+            this.$router.push({name:'quest',params:{id1:this.items.id,id2:this.idData}});
         },
         handleClick() { 
         this.$store.dispatch('user',null); 
@@ -308,6 +310,9 @@ export default {
           if(this.user.nombres != "invitado"){
             this.dataset.id_estudiante = this.user.id;
           }
+          this.dataset.nro_lineas = this.lineas
+          this.dataset.sexo = this.user.sexo;
+          this.dataset.edad = this.user.edad;
           this.dataset.id_enunciado = this.items.id;
           this.dataset.solucion = document.getElementById("yourcode").value;
           this.dataset.resultado = document.getElementById("output").value;
@@ -325,3 +330,7 @@ export default {
     }
 }
 </script>
+
+<style>
+  .my-textarea textarea { color: white !important }
+</style>

@@ -24,18 +24,14 @@
 
       <div class="d-flex align-right">
         <v-col>
-        <router-link to="/login">
-          <v-btn margin-right="200" v-if="!user" color="primary">
+          <v-btn margin-right="200" v-if="!user" color="primary" @click="home()">
           Ingresar
         </v-btn>
-        </router-link>
         </v-col>
         <v-col>
-        <router-link to="/register">
-          <v-btn v-if="!user" color="orange">
+          <v-btn v-if="!user" color="orange" @click="register()">
           Registrate
         </v-btn>
-        </router-link>
         </v-col>
       </div>
 
@@ -62,10 +58,10 @@
             <v-list-item>
               <v-list-item-title>{{ user.nombres }} {{user.apellido1}} {{user.apellido2}}</v-list-item-title>
             </v-list-item>
-            <v-list-item @click="() => {}">
+            <v-list-item v-if="user.nombres!='invitado'" @click="() => {}">
               <v-list-item-title>Mis Datos</v-list-item-title>
             </v-list-item>
-            <v-list-item @click="() => {}">
+            <v-list-item v-if="user.nombres!='invitado'" @click="() => {}">
               <v-list-item-title>Estadísticas</v-list-item-title>
             </v-list-item>
             <v-list-item @click="() => cerrar()">
@@ -90,14 +86,12 @@
           v-model="group"
           active-class="deep-purple--text text--accent-4"
         >
-          <router-link to="/">
-          <v-list-item>
+          <v-list-item @click="home()">
             <v-list-item-icon>
               <v-icon>mdi-home</v-icon>
             </v-list-item-icon>
             <v-list-item-title>Home</v-list-item-title>
           </v-list-item>
-          </router-link>
 
           <router-link to="/">
           <v-list-item>
@@ -108,32 +102,26 @@
           </v-list-item>
           </router-link>
 
-          <router-link to="/enunciados">
-          <v-list-item>
+          <v-list-item @click="enunciados()">
             <v-list-item-icon>
               <v-icon>mdi-file-multiple-outline</v-icon>
             </v-list-item-icon>
             <v-list-item-title>Enunciados</v-list-item-title>
           </v-list-item>
-          </router-link>
 
-          <router-link to="/">
           <v-list-item>
             <v-list-item-icon>
               <v-icon>mdi-filter-check-outline</v-icon>
             </v-list-item-icon>
             <v-list-item-title>Revisar Enunciados</v-list-item-title>
           </v-list-item>
-          </router-link>
 
-          <router-link to="/data">
-          <v-list-item>
+          <v-list-item @click="datos">
             <v-list-item-icon>
               <v-icon>mdi-database-outline</v-icon>
             </v-list-item-icon>
             <v-list-item-title>Datos</v-list-item-title>
           </v-list-item>
-          </router-link>
 
           <!--router-link to="prueba">
           <v-list-item>
@@ -178,11 +166,25 @@ export default {
         this.$store.dispatch('user',null); 
         this.$router.push('/'); 
       },
+    login() {
+        this.$router.push('/login');
+      },
+    register() {
+        this.$router.push('/register');
+      },
+    home() {
+        this.$router.push('/');
+      },
+    enunciados() {
+        this.$router.push('/enunciados');
+      },
+    datos() {
+        this.$router.push('/data');
+      },
     cerrar() {
         this.$store.dispatch('user',null);
         this.$cookies.remove("tokken");
         this.$router.push('/');
-        
       },
   },
 
