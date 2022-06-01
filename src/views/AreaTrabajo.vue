@@ -83,11 +83,11 @@
             <v-textarea id="output" class="my-textarea pa-4" outlined disabled cols="20" rows="10" background-color="black" color="cyan" label=""> 
             </v-textarea>
         </v-row>
-        <!--v-row>
+        <v-row>
           <div> {{ dataset }} {{largoNuevo}} {{lineas}}</div>
         </v-row>
         
-        <v-row>
+        <!--v-row>
             
             <v-col><h1>Solución:</h1>
                 <v-textarea v-model="solucion"></v-textarea>
@@ -173,7 +173,8 @@ export default {
       value_error: 0,
       nro_lineas: 0,
       nro_ediciones:0,
-      nro_compilaciones:0
+      nro_compilaciones:0,
+      nro_estrucflujo: 0
     },
     errores:{
         module: "ModuleNotFoundError",
@@ -316,7 +317,50 @@ export default {
           this.dataset.id_enunciado = this.items.id;
           this.dataset.solucion = document.getElementById("yourcode").value;
           this.dataset.resultado = document.getElementById("output").value;
-        }
+
+          var contador = 0;
+          var result = 0;
+          console.log("PASO");
+          while(result!=-1){
+            result = codigo.indexOf("elif ");
+            if(result!=-1){
+              contador = contador + 1;
+              codigo = codigo.replace("elif ","*");
+            }
+          }
+          console.log("PASO");
+          result = 0;
+          while(result!=-1){
+            result = codigo.indexOf("if ");
+            console.log("PASO INDEX");
+            console.log(result);
+            console.log(codigo[result]);
+            if(result!=-1){
+              contador = contador + 1;
+              codigo = codigo.replace("if ","*");
+            }
+          }
+          console.log("PASO");
+          result = 0;
+          while(result!=-1){
+            result = codigo.indexOf("else:");
+            if(result!=-1){
+              contador = contador + 1;
+              codigo = codigo.replace("else:","*");
+            }
+          }
+          console.log("PASO");
+          result = 0;
+          while(result!=-1){
+            result = codigo.indexOf("while ");
+            if(result!=-1){
+              contador = contador + 1;
+              codigo = codigo.replace("while ","*");
+            }
+          }
+          this.dataset.nro_estrucflujo = contador;
+          console.log("PASO");
+        }, 
       
     },
 
