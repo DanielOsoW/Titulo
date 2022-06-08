@@ -53,15 +53,20 @@
                             >Cancelar</v-btn>
 
                             <v-btn
+                                v-if="inicio=true"
                                 text
-                                @click="goToEnunciado(item.id)"
+                                @click="goToEnunciado(item.id), inicio=false"
                                 color="green"
                             >
                             
                             Iniciar
                             
                             </v-btn>
-                            
+                            <v-progress-circular
+                              v-else
+                              indeterminate
+                              color="green"
+                            ></v-progress-circular>
                             </v-card-actions>
                         </v-card>
                     </template>
@@ -86,6 +91,7 @@ export default {
 
   data: () => ({
     items: [],
+    inicio: true,
     resultado:0,
     drawer: false,
     group: null,

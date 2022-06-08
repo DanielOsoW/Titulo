@@ -74,6 +74,15 @@ export default new VueRouter({
     },
 
     {
+      path: '/dataArea/:id',
+      name: 'dataArea',
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import(/* webpackChunkName: "dataArea" */ '../views/DataAreaView.vue')
+    },
+
+    {
       path: '/quest/:id1/:id2',
       name: 'quest',
       // route level code-splitting

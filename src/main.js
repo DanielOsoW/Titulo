@@ -6,6 +6,7 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import store from './store'
 import VueCookies from 'vue-cookies'
+import VueApexCharts from 'vue-apexcharts'
 Vue.config.productionTip = false
 
 const axiosInstance = axios.create({ 
@@ -19,11 +20,13 @@ axios.defaults.headers.common['Authorization'] = 'Bearer' + localStorage.getItem
 
 Vue.use(VueCookies);
 Vue.$cookies.config({httpOnly: true})
+Vue.component('apex-chart', VueApexCharts)
 new Vue({
   vuetify,
   router,
   axios,
   VueAxios,
   store,
+  VueApexCharts,
   render: h => h(App)
 }).$mount('#app')

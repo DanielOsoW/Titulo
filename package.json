@@ -9,10 +9,12 @@
   },
   "dependencies": {
     "@programmingplus/pyjs": "^0.0.7",
+    "apexcharts": "^3.35.3",
     "axios": "^0.26.1",
     "client-side-python-runner": "^1.6.6",
     "core-js": "^3.8.3",
     "vue": "^2.6.14",
+    "vue-apexcharts": "^1.6.2",
     "vue-axios": "^3.4.1",
     "vue-cookies": "^1.8.1",
     "vue-router": "^3.5.1",

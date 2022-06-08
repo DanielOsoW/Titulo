@@ -75,7 +75,7 @@
         </v-row>
         <v-row>
             <v-form> 
-            <v-textarea id="yourcode" class="pa-4" cols="80" rows="10" outlined background-color="white" color="orange orange-darken-4" label="Tu código" @change="contador()">
+            <v-textarea v-on:keydown.tab="enableTab('yourcode')" id="yourcode" class="pa-4" cols="80" rows="10" outlined background-color="white" color="orange orange-darken-4" label="Tu código" @change="contador()">
                 print("Hello World") 
             </v-textarea><br /> 
             
@@ -83,11 +83,11 @@
             <v-textarea id="output" class="my-textarea pa-4" outlined disabled cols="20" rows="10" background-color="black" color="cyan" label=""> 
             </v-textarea>
         </v-row>
-        <v-row>
+        <!--v-row>
           <div> {{ dataset }} {{largoNuevo}} {{lineas}}</div>
         </v-row>
         
-        <!--v-row>
+        <-row>
             
             <v-col><h1>Solución:</h1>
                 <v-textarea v-model="solucion"></v-textarea>
@@ -174,7 +174,9 @@ export default {
       nro_lineas: 0,
       nro_ediciones:0,
       nro_compilaciones:0,
-      nro_estrucflujo: 0
+      nro_estrucflujo: 0,
+      nro_operandos: 0,
+      respuesta: null
     },
     errores:{
         module: "ModuleNotFoundError",
@@ -320,48 +322,71 @@ export default {
 
           var contador = 0;
           var result = 0;
-          console.log("PASO");
           while(result!=-1){
             result = codigo.indexOf("elif ");
             if(result!=-1){
               contador = contador + 1;
-              codigo = codigo.replace("elif ","*");
+              codigo = codigo.replace("elif "," ");
             }
           }
-          console.log("PASO");
           result = 0;
           while(result!=-1){
             result = codigo.indexOf("if ");
-            console.log("PASO INDEX");
-            console.log(result);
-            console.log(codigo[result]);
             if(result!=-1){
               contador = contador + 1;
-              codigo = codigo.replace("if ","*");
+              codigo = codigo.replace("if "," ");
             }
           }
-          console.log("PASO");
           result = 0;
           while(result!=-1){
             result = codigo.indexOf("else:");
             if(result!=-1){
               contador = contador + 1;
-              codigo = codigo.replace("else:","*");
+              codigo = codigo.replace("else:"," ");
             }
           }
-          console.log("PASO");
           result = 0;
           while(result!=-1){
             result = codigo.indexOf("while ");
             if(result!=-1){
               contador = contador + 1;
-              codigo = codigo.replace("while ","*");
+              codigo = codigo.replace("while "," ");
             }
           }
           this.dataset.nro_estrucflujo = contador;
-          console.log("PASO");
-        }, 
-      
+
+          var contador2 = 0;
+          var iter2 = codigo.length;
+          for(var j = 0; j < iter2; j++){
+            if(codigo[j] == '+' || codigo[j] == '-' || codigo[j] == '*' || codigo[j] == '/' || codigo[j] == '%'){
+              contador2 = contador2 + 1;
+            }
+          }
+          this.dataset.nro_operandos = contador2;
+          this.dataset.respuesta = this.items.respuesta;
+        },
+        enableTab(id) {
+          var el = document.getElementById(id);
+          el.onkeydown = function(e) {
+              if (e.keyCode === 9) { // tab was pressed
+
+                  // get caret position/selection
+                  var val = this.value,
+                      start = this.selectionStart,
+                      end = this.selectionEnd;
+
+                  // set textarea value to: text before caret + tab + text after caret
+                  this.value = val.substring(0, start) + '\t' + val.substring(end);
+
+                  // put caret at right position again
+                  this.selectionStart = this.selectionEnd = start + 1;
+
+                  // prevent the focus lose
+                  return false;
+
+              }
+          };
+      }
     },
 
     computed: {

@@ -38,7 +38,7 @@
       ></v-slider>
     </v-card-text>
 
-    <v-subheader>¿Qué tan apresurado o apurado fue el ritmo de la tarea?</v-subheader>
+    <v-subheader>¿Qué tan apresurado fue el ritmo de la tarea?</v-subheader>
 
     <v-card-text>
       <v-slider
