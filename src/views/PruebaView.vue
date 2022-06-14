@@ -1,67 +1,81 @@
-<template> 
-<div>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js" type="text/javascript"></script> 
-<script src="http://www.skulpt.org/js/skulpt.min.js" type="text/javascript"></script> 
-<script src="http://www.skulpt.org/js/skulpt-stdlib.js" type="text/javascript"></script> 
+<template>
+  <div id="app">
+    <h1>Vue Prism Editor - v1</h1>
+    <pre>{{ code }}</pre>
+    <input type="checkbox" v-model="lineNumbers" /> Linenumbers
+    <prism-editor
+      class="my-editor height-300"
+      v-model="code"
+      :highlight="highlighter"
+      :line-numbers="lineNumbers"
+    ></prism-editor>
 
+    <h1>Autosize</h1>
+    <p>
+      don't use
+      <b>min-height</b> or <b>height</b> you could still define
+      <b>max-height</b>
+    </p>
+    <prism-editor
+      class="my-editor"
+      v-model="code"
+      :highlight="highlighter"
+    ></prism-editor>
 
+    <div style="margin-top: 25px; font-size: 25px">
+      Documantation on
+      <a target="_blank" href="https://github.com/koca/vue-prism-editor"
+        >Github</a
+      >
+    </div>
+  </div>
+</template>
 
+<script>
+import { PrismEditor } from "vue-prism-editor";
+import "vue-prism-editor/dist/prismeditor.min.css"; // import the styles somewhere
 
+// import highlighting library (you can use any library you want just return html string)
+import { highlight, languages } from "prismjs/components/prism-core";
+import "prismjs/components/prism-clike";
+import "prismjs/components/prism-javascript";
+import "prismjs/themes/prism-tomorrow.css"; // import syntax highlighting styles
 
- 
+export default {
+  components: {
+    PrismEditor,
+  },
+  data: () => ({
+    code: 'console.log("Hello World")',
+    lineNumbers: true,
+  }),
+  methods: {
+    highlighter(code) {
+      return highlight(code, languages.js); //returns html
+    },
+  },
+};
+</script>
 
-<h3>Try This</h3> 
-<form> 
-<textarea id="yourcode" cols="40" rows="10">import turtle
+<style lang="scss">
+// required class
+.my-editor {
+  background: #2d2d2d;
+  color: #ccc;
 
-t = turtle.Turtle()
-t.forward(100)
-
-print "Hello World" 
-</textarea><br /> 
-<button type="button" onclick="runit()">Run</button> 
-</form> 
-<pre id="output" ></pre> 
-<!-- If you want turtle graphics include a canvas -->
-<div id="mycanvas"></div> 
-
-
-</div>
-</template> 
-
-<script type="text/javascript"> 
-// output functions are configurable.  This one just appends some text
-// to a pre element.
-function outf(text) { 
-    var mypre = document.getElementById("output"); 
-    mypre.innerHTML = mypre.innerHTML + text; 
-} 
-function builtinRead(x) {
-    if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined)
-            throw "File not found: '" + x + "'";
-    return Sk.builtinFiles["files"][x];
+  font-family: Fira code, Fira Mono, Consolas, Menlo, Courier, monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  padding: 5px;
 }
 
-// Here's everything you need to run a python program in skulpt
-// grab the code from your textarea
-// get a reference to your pre element for output
-// configure the output function
-// call Sk.importMainWithBody()
-function runit() { 
-   var prog = document.getElementById("yourcode").value; 
-   var mypre = document.getElementById("output"); 
-   mypre.innerHTML = ''; 
-   Sk.pre = "output";
-   Sk.configure({output:outf, read:builtinRead}); 
-   (Sk.TurtleGraphics || (Sk.TurtleGraphics = {})).target = 'mycanvas';
-   var myPromise = Sk.misceval.asyncToPromise(function() {
-       return Sk.importMainWithBody("<stdin>", false, prog, true);
-   });
-   myPromise.then(function(mod) {
-       console.log('success');
-   },
-       function(err) {
-       console.log(err.toString());
-   });
-} 
-</script>
+// optional
+.prism-editor__textarea:focus {
+  outline: none;
+}
+
+// not required:
+.height-300 {
+  height: 300px;
+}
+</style>

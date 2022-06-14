@@ -45,7 +45,7 @@
                     });
                     let response = result.data; 
                     localStorage.setItem('token', response.jwt);
-                    this.$cookies.set("tokken",response);
+                    this.$cookies.set("token",response);
                     
                     var result2 = await this.$http.post('/user', response);
                     let response2 = result2.data; 

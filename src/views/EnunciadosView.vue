@@ -13,7 +13,8 @@
             class="pa-2"
             v-for="(item, i) in items"
             :key="i">
-            <v-card
+            <v-container>
+              <v-card
               class="pa-2" 
               color="blue darken-3"
               dark
@@ -69,6 +70,8 @@
 
               </v-card-actions>
             </v-card>
+            </v-container>
+            
     </v-row>
   </v-col>
 </v-container>
@@ -93,6 +96,9 @@ export default {
   methods:{
         //Función asíncrona para consultar los datos
         getData: async function(){
+          if (this.user==null){
+            this.$router.push('/');
+          }
           try {
               var result = await this.$http.get('/enunciados/all');
               let response = result.data;

@@ -7,6 +7,9 @@ import VueAxios from 'vue-axios'
 import store from './store'
 import VueCookies from 'vue-cookies'
 import VueApexCharts from 'vue-apexcharts'
+import * as XLSX from 'xlsx'
+import * as VuePrismEditor from "vue-prism-editor"
+
 Vue.config.productionTip = false
 
 const axiosInstance = axios.create({ 
@@ -21,12 +24,15 @@ axios.defaults.headers.common['Authorization'] = 'Bearer' + localStorage.getItem
 Vue.use(VueCookies);
 Vue.$cookies.config({httpOnly: true})
 Vue.component('apex-chart', VueApexCharts)
+Vue.component("prism-editor", VuePrismEditor)
 new Vue({
   vuetify,
   router,
   axios,
   VueAxios,
   store,
+  XLSX,
   VueApexCharts,
+  VuePrismEditor,
   render: h => h(App)
 }).$mount('#app')

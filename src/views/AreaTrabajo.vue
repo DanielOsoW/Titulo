@@ -73,21 +73,49 @@
         <v-row>
           <v-btn type="button" @click="cleanOut(),runit2()">Ejecutar</v-btn> 
         </v-row>
+        <br/><br/>
         <v-row>
+          <v-col>
+            <prism-editor
+              id="yourcode"
+              class="my-editor height-200"
+              v-model="code"
+              :highlight="highlighter"
+              :line-numbers="lineNumbers"
+              @change="contador()"
+            ></prism-editor>
+          </v-col>
+          <v-col>
+            <v-textarea 
+              id="output"
+              class="my-textarea pa-4"
+              outlined
+              disabled
+              cols="20"
+              rows="10"
+              background-color="black"
+              color="cyan"
+              label=""
+            ></v-textarea>
+          </v-col>
+          
+         
+        </v-row>
+        <!--v-row>
             <v-form> 
-            <v-textarea v-on:keydown.tab="enableTab('yourcode')" id="yourcode" class="pa-4" cols="80" rows="10" outlined background-color="white" color="orange orange-darken-4" label="Tu código" @change="contador()">
+            <v-textarea v-on:keydown.tab="enableTab('yourcode')"  class="pa-4" cols="80" rows="10" outlined background-color="white" color="orange orange-darken-4" label="Tu código" @change="contador()">
                 print("Hello World") 
             </v-textarea><br /> 
             
             </v-form> 
-            <v-textarea id="output" class="my-textarea pa-4" outlined disabled cols="20" rows="10" background-color="black" color="cyan" label=""> 
-            </v-textarea>
+            
         </v-row>
-        <!--v-row>
+        
+        <v-row>
           <div> {{ dataset }} {{largoNuevo}} {{lineas}}</div>
         </v-row>
         
-        <-row>
+        <row>
             
             <v-col><h1>Solución:</h1>
                 <v-textarea v-model="solucion"></v-textarea>
@@ -131,15 +159,27 @@
 
 <script>
 import {mapGetters} from 'vuex'
-import { run } from '@programmingplus/pyjs';
+import { run } from '@programmingplus/pyjs'
+import { PrismEditor } from "vue-prism-editor";
+import "vue-prism-editor/dist/prismeditor.min.css"; // import the styles somewhere
+
+// import highlighting library (you can use any library you want just return html string)
+import { highlight, languages } from "prismjs/components/prism-core";
+import "prismjs/components/prism-clike";
+import "prismjs/components/prism-javascript";
+import "prismjs/themes/prism-tomorrow.css"; // import syntax highlighting styles
+
 export default {
   
   name: 'App',
   
   components: {
+    PrismEditor,
   },
 
   data: () => ({
+    code: 'print("Hello World")',
+    lineNumbers: true,
     idData:0,
     error: 0,
     drawer: false,
@@ -189,8 +229,15 @@ export default {
     }
   }),
   methods:{
+        highlighter(code) {
+          this.contador();
+          return highlight(code, languages.js); //returns html
+        },
         //Función asíncrona para consultar los datos
         getData: async function(){
+          if (this.user==null){
+            this.$router.push('/');
+          }
           try {
               var ruta = this.$route.path;
               var largo = ruta.length;
@@ -250,13 +297,13 @@ export default {
         },
         runit2: async function(){
           const output = (s) => (document.getElementById("output").value += s);
-          await run(document.getElementById("yourcode").value, { writeStdout: output, writeStderr: output });
+          await run(this.code, { writeStdout: output, writeStderr: output });
           document.getElementById("get").click();
         },
         
         getOutput(){
           this.resultado = document.getElementById("output").value;
-          this.solucion = document.getElementById("yourcode").value;
+          this.solucion = this.code;
           this.dataset.nro_compilaciones = this.dataset.nro_compilaciones + 1;
           var result = this.resultado.includes(this.errores.module);
           if (result){
@@ -295,14 +342,14 @@ export default {
           }
         },
         contador(){
-          this.largoNuevo = document.getElementById("yourcode").value.length;
+          this.largoNuevo = this.code.length;
           if(this.largoNuevo!=this.largoAnterior){
             this.dataset.nro_ediciones = this.dataset.nro_ediciones + 1;
           }
           this.largoAnterior = this.largoNuevo;
         },
         lines(){
-          var codigo = document.getElementById("yourcode").value;
+          var codigo = this.code;
           var iter = codigo.length;
           this.lineas = 1;
           for(var i = 0; i < iter; i++){
@@ -317,7 +364,7 @@ export default {
           this.dataset.sexo = this.user.sexo;
           this.dataset.edad = this.user.edad;
           this.dataset.id_enunciado = this.items.id;
-          this.dataset.solucion = document.getElementById("yourcode").value;
+          this.dataset.solucion = this.code;
           this.dataset.resultado = document.getElementById("output").value;
 
           var contador = 0;
@@ -400,6 +447,26 @@ export default {
 }
 </script>
 
-<style>
-  .my-textarea textarea { color: white !important }
+<style lang="scss">
+.my-textarea textarea { color: white !important }
+// required class
+.my-editor {
+  background: #2d2d2d;
+  color: #ccc;
+
+  font-family: Fira code, Fira Mono, Consolas, Menlo, Courier, monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  padding: 5px;
+}
+
+// optional
+.prism-editor__textarea:focus {
+  outline: none;
+}
+
+// not required:
+.height-300 {
+  height: 300px;
+}
 </style>

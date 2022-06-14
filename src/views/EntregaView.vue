@@ -74,6 +74,9 @@ export default {
   methods:{
         //Función asíncrona para consultar los datos
         getData: async function(){
+          if (this.user==null){
+            this.$router.push('/');
+          }
           try {
               var result = await this.$http.get(this.$route.path);
               let response = result.data;

@@ -38,7 +38,7 @@
       ></v-slider>
     </v-card-text>
 
-    <v-subheader>¿Qué tan apresurado fue el ritmo de la tarea?</v-subheader>
+    <v-subheader>¿Qué tan bueno fue el ritmo temporal para el desarrollo de la tarea?</v-subheader>
 
     <v-card-text>
       <v-slider
@@ -64,7 +64,7 @@
       ></v-slider>
     </v-card-text>
 
-    <v-subheader>¿Qué tan duro tuviste que trabajar para lograr tu nivel de rendimiento?</v-subheader>
+    <v-subheader>¿Qué tan duro tuviste que trabajar para lograr un buen nivel de rendimiento?</v-subheader>
 
     <v-card-text>
       <v-slider
@@ -77,7 +77,7 @@
       ></v-slider>
     </v-card-text>
 
-    <v-subheader>¿Cuán inseguro, desalentado, irritado, estresado, y molesto te sentiste?</v-subheader>
+    <v-subheader>¿Cuán inseguro, desalentado, irritado, estresado, y molesto te sentiste en el momento del desarrollo?</v-subheader>
 
     <v-card-text>
       <v-slider
@@ -142,6 +142,9 @@ export default {
   methods:{
         //Función asíncrona para consultar los datos
         getData: async function(){
+          if (this.user==null){
+            this.$router.push('/');
+          }
           try {
               var ruta = this.$route.path;
               var largo = ruta.length;

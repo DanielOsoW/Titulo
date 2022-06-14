@@ -13,10 +13,25 @@
   </v-row>
   
   <v-row>
-    <div>
-    <h1>Métricas de Éxito/Fallos</h1>
-     <apex-chart v-if="chart3==true" width="500" type="bar" :options="chartOptions3" :series="series3"></apex-chart>
-   </div>
+    <v-col>
+        <div>
+            <h1>Métricas de Éxito/Fallos</h1>
+            <apex-chart v-if="chart3==true" width="500" type="bar" :options="chartOptions3" :series="series3"></apex-chart>
+        </div>
+    </v-col>
+    
+    <v-col>
+        <div>
+            <h1>Código Desarrollado</h1>
+            <div v-for="(item, i) in items"
+                    :key="i">
+                <br/>
+                <h2>Intento {{i+1}}</h2>
+                <v-textarea disabled v-model="item.solucion" cols="20" rows="10"></v-textarea>
+            </div>
+        </div>
+    </v-col>
+   
   </v-row>
    
 </v-container>
@@ -123,7 +138,7 @@ export default {
           try {
               var ruta = this.$route.path;
               var largo = ruta.length;
-              var nuevaRuta = "/data/";
+              var nuevaRuta = "/progress/"+this.user.id+"/";
               var contador = 0;
               for (var j = 0; j < largo; j++){
                 if (ruta[j]=="/"){

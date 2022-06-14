@@ -53,6 +53,31 @@
               required
           ></v-select>
 
+        <v-select
+              class= "d-flex pa-2"  
+              v-model="titulo_profesional"
+              :items="carreras"
+              label="Título Profesional"
+              required
+        ></v-select>
+
+        <v-select 
+              class= "d-flex pa-2" 
+              v-model="entidad"
+              :rules="entidadRules"
+              :items="roles"
+              label="Yo soy..."
+              required
+        ></v-select>
+
+        <v-text-field
+              class= "d-flex pa-2" 
+              v-model="anos_experiencia"
+              :rules="expRules"
+              label="Años de experiencia programando"
+              required
+        ></v-text-field>
+
         <v-text-field
               class= "d-flex pa-2"
               v-model="correo"
@@ -93,7 +118,7 @@
         ></v-select>
 
         <div>{{cantiCarreras}}{{allCarreras}}</div-->
-        <div>{{nombres}}{{apellido1}}{{apellido2}}{{correo}}{{nueva1}}{{nueva2}}{{edad}}{{sexo}}</div>
+        <!--div>{{nombres}}{{apellido1}}{{apellido2}}{{correo}}{{nueva1}}{{nueva2}}{{edad}}{{sexo}}</div-->
 
         
         <v-btn
@@ -132,9 +157,22 @@
         correo:null,
         nueva1: null,
         nueva2: null,
-        carrera: null,
+        roles:[
+        'Estudiante',
+        'Profesor',
+        'Profesional del área'
+      ],
+      carreras:[
+        'INGENIERÍA CIVIL EN INFORMÁTICA',
+        'INGENIERÍA DE EJECUCIÓN EN COMPUTACIÓN E INFORMÁTICA',
+        'ANALISTA EN COMPUTACIÓN CIENTÍFICA / LICENCIATURA EN CIENCIA DE LA COMPUTACIÓN',
+        'PEDAGOGÍA EN MATEMÁTICA Y COMPUTACIÓN'
+      ],
         edad: null,
         sexo:"",
+        anos_experiencia:null,
+        titulo_profesional:null,
+        entidad:null,
         cantiCarreras: null,
         allCarreras: [],
         showPassword1:false,
@@ -165,9 +203,16 @@
         sexoRules: [
           v => !!v || 'Sexo requerido',
           v => (v != null) || 'Sexo requerido',
+        ],
+        entidadRules: [
+          v => !!v || 'Entidad requerida',
+          v => (v != null) || 'Entidad requerida',
+        ],
+        expRules: [
+        v => !!v || 'Experiencia requerida',
+        v => (v && v > -1) || 'Experiencia inválida',
         ],      
         select: null,
-        carreras: [],
         checkbox: false,
         usuario: null,
         texto1: null,
@@ -190,7 +235,7 @@
         this.$refs.form.resetValidation()
       },
 
-      //Función asíncrona para consultar los datos
+      /*//Función asíncrona para consultar los datos
         getData: async function(){
             try {
                 let response = await this.$http.get('carreras/all');
@@ -207,7 +252,7 @@
             } catch (error) {
                 console.log('error', error);
             }
-        },
+        },*/
 
 
         register: async function() {
@@ -216,12 +261,12 @@
             this.texto1='Las contraseñas no son iguales';
             this.valid1 = true;
           }
-          else if(this.nombres != '' && this.paterno!='' && this.materno != '' &&  this.correo != '' && this.nueva1!='' && this.nueva2!=''){
+          else if(this.nombres != '' && this.paterno!='' && this.materno != '' &&  this.correo != '' && this.nueva1!='' && this.nueva2!='' &&  this.titulo_profesional != '' && this.anos_experiencia!=null && this.entidad!='' && this.edad!=null && this.sexo!=''){
             try {
-                var result = await this.$http.post('usuarios/create',{"apellido1":this.apellido1, "apellido2":this.apellido2, "nombres":this.nombres, "correo":this.correo, "password":this.nueva1, "rol":1, "carrera":1});
+                var result = await this.$http.post('usuarios/create',{"apellido1":this.apellido1, "apellido2":this.apellido2, "nombres":this.nombres, "correo":this.correo, "password":this.nueva1, "rol":1, "carrera":1, "titulo_profesional":this.titulo_profesional, "anos_experiencia":this.anos_experiencia, "entidad":this.entidad, "edad":this.edad, "sexo":this.sexo});
                 let response2 = result.data;
                 this.usuario = response2.data;
-                this.texto1='Información editada con éxito';
+                this.texto1='Información editada con éxito';  
                 this.$router.push('/login')
             } catch (error) {
                 console.log('error', error);
@@ -234,9 +279,9 @@
           
         },
     },
-    //Función que se ejecuta al cargar el componente
+    /*//Función que se ejecuta al cargar el componente
     created:function(){
         this.getData();
-    }
+    }*/
   }
 </script>

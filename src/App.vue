@@ -58,12 +58,12 @@
             <v-list-item>
               <v-list-item-title>{{ user.nombres }} {{user.apellido1}} {{user.apellido2}}</v-list-item-title>
             </v-list-item>
-            <v-list-item v-if="user.nombres!='invitado'" @click="() => {}">
+            <!--v-list-item v-if="user.nombres!='invitado'" @click="() => {}">
               <v-list-item-title>Mis Datos</v-list-item-title>
             </v-list-item>
             <v-list-item v-if="user.nombres!='invitado'" @click="() => {}">
               <v-list-item-title>Estadísticas</v-list-item-title>
-            </v-list-item>
+            </v-list-item-->
             <v-list-item @click="() => cerrar()">
               <v-list-item-title>Cerrar sesión</v-list-item-title>
             </v-list-item>
@@ -93,14 +93,12 @@
             <v-list-item-title>Home</v-list-item-title>
           </v-list-item>
 
-          <router-link to="/">
           <v-list-item>
             <v-list-item-icon>
               <v-icon>mdi-account</v-icon>
             </v-list-item-icon>
             <v-list-item-title>Mi Cuenta</v-list-item-title>
           </v-list-item>
-          </router-link>
 
           <v-list-item @click="enunciados()">
             <v-list-item-icon>
@@ -109,14 +107,21 @@
             <v-list-item-title>Enunciados</v-list-item-title>
           </v-list-item>
 
-          <v-list-item>
+          <v-list-item v-if="user.rol!=1">
             <v-list-item-icon>
               <v-icon>mdi-filter-check-outline</v-icon>
             </v-list-item-icon>
             <v-list-item-title>Revisar Enunciados</v-list-item-title>
           </v-list-item>
 
-          <v-list-item @click="datos">
+          <v-list-item v-if="user.rol==1 && user.nombres!='invitado'" @click="progress()">
+            <v-list-item-icon>
+              <v-icon>mdi-filter-check-outline</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Mi Progreso</v-list-item-title>
+          </v-list-item>
+
+          <v-list-item v-if="user.rol!=1" @click="datos()">
             <v-list-item-icon>
               <v-icon>mdi-database-outline</v-icon>
             </v-list-item-icon>
@@ -162,6 +167,33 @@ export default {
   },
 
   methods: {
+
+    //Función asíncrona para consultar los datos
+        getData: async function(){
+          try {
+              this.cosas = this.$cookies.get("token");
+              if(this.user==null && this.cosas!=null){
+
+                  if(this.cosas.nombres == 'invitado'){
+                    this.$store.dispatch('user',this.cosas);
+                  }
+                  
+                  else{
+                    var result2 = await this.$http.post('/user', { jwt: this.cosas.jwt});
+                    let response2 = result2.data; 
+                    this.$store.dispatch('user', response2);
+                  }
+                  
+              } 
+              var result = await this.$http.get('/usuarios/all');
+              let response = result.data;
+              this.items = response;
+                
+            }catch (error) {
+                console.log('error', error);
+            }
+        },
+
     handleClick() { 
         this.$store.dispatch('user',null); 
         this.$router.push('/'); 
@@ -181,19 +213,23 @@ export default {
     datos() {
         this.$router.push('/data');
       },
+    progress() {
+        this.$router.push('/progress');
+      },
     cerrar() {
         this.$store.dispatch('user',null);
-        this.$cookies.remove("tokken");
+        this.$cookies.remove("token");
         this.$router.push('/');
       },
   },
-
+  
   computed: {
     ...mapGetters(['user']) 
   },
 
   data: () => ({
     //
+    cosas:null,
     drawer: false,
     group: null,
     options: [
@@ -211,5 +247,10 @@ export default {
         },
       ],
   }),
+
+   //Función que se ejecuta al cargar el componente
+    created:function(){
+        this.getData();
+    }
 };
 </script>

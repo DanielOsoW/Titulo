@@ -90,14 +90,32 @@ export default new VueRouter({
       // which is lazy-loaded when the route is visited.
       component: () => import(/* webpackChunkName: "quest" */ '../views/QuestionView.vue')
     },
-    //{
-    //  path: '/prueba',
-    //  name: 'prueba',
+
+    {
+      path: '/progress',
+      name: 'progress',
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-    //  component: () => import(/* webpackChunkName: "prueba" */ '../views/PruebaView.vue')
-    //}
+      component: () => import(/* webpackChunkName: "progress" */ '../views/ProgressView.vue')
+    },
+
+    {
+      path: '/progressArea/:id',
+      name: 'progressArea',
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import(/* webpackChunkName: "progressArea" */ '../views/ProgressAreaView.vue')
+    },
+    {
+      path: '/prueba',
+      name: 'prueba',
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import(/* webpackChunkName: "prueba" */ '../views/PruebaView.vue')
+    }
   ]
 })
 

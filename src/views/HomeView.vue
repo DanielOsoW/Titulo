@@ -12,7 +12,7 @@
       <v-col>
          <v-dialog
                     transition="dialog-top-transition"
-                    max-width="600"
+                    max-width="900"
                 >
                     <template v-slot:activator="{ on, attrs }">
                      <v-btn color="secondary" class="center mb-10" block v-bind="attrs" v-on="on" elevation="12" x-large>
@@ -37,12 +37,39 @@
                                 required
                               ></v-text-field>
                             </v-card-text>
+
+                            <v-card-text>
+                              Años de experiencia programando en Python
+                              <v-text-field
+                                v-model="invitado.anos_experiencia"
+                                :rules="expRules"
+                                required
+                              ></v-text-field>
+                            </v-card-text>
                             
                             <v-card-text>
                               Sexo
                               <v-select 
                                 v-model="invitado.sexo"
                                 :items="sexos"
+                                required
+                              ></v-select>
+                           </v-card-text>
+
+                           <v-card-text>
+                              Título Profesional
+                              <v-select 
+                                v-model="invitado.titulo_profesional"
+                                :items="carreras"
+                                required
+                              ></v-select>
+                           </v-card-text>
+
+                           <v-card-text>
+                              Yo soy...
+                              <v-select 
+                                v-model="invitado.entidad"
+                                :items="roles"
                                 required
                               ></v-select>
                            </v-card-text>
@@ -56,7 +83,7 @@
                             >Cancelar</v-btn>
 
                             <v-btn
-                                v-if="invitado.sexo=='' || invitado.edad==0"
+                                v-if="invitado.sexo=='' || invitado.edad==0 || invitado.anos_experiencia=='' || invitado.entidad=='' || invitado.titulo_profesional==''"
                                 text
                                 color="gray"
                                 @click="snackbar = true"
@@ -140,6 +167,18 @@ import {mapGetters} from 'vuex'
     data: () => ({
       model: 0,
       items: [],
+      roles:[
+        'Estudiante',
+        'Profesor',
+        'Profesional del área'
+      ],
+      carreras:[
+        'INGENIERÍA CIVIL EN INFORMÁTICA',
+        'INGENIERÍA DE EJECUCIÓN EN COMPUTACIÓN E INFORMÁTICA',
+        'ANALISTA EN COMPUTACIÓN CIENTÍFICA / LICENCIATURA EN CIENCIA DE LA COMPUTACIÓN',
+        'PEDAGOGÍA EN MATEMÁTICA Y COMPUTACIÓN'
+      ],
+      soy:"",
       checkInvitado: false,
       snackbar: false,
       text: `Debes ingresar edad y sexo para poder continuar como invitado`,
@@ -151,8 +190,12 @@ import {mapGetters} from 'vuex'
       invitado: {
         nombres:"invitado",
         edad:null,
-        sexo:""
+        sexo:"",
+        anos_experiencia:null,
+        titulo_profesional:"",
+        entidad:""
       },
+      
       colors: [
         {
         titulo:'Variables',
@@ -182,6 +225,10 @@ import {mapGetters} from 'vuex'
         v => !!v || 'Edad requerida',
         v => (v && v > 10 && v < 100) || 'Edad inválida',
       ],
+      expRules: [
+        v => !!v || 'Experiencia requerida',
+        v => (v && v > -1) || 'Experiencia inválida',
+      ],
     }),
 
     methods:{
@@ -191,7 +238,6 @@ import {mapGetters} from 'vuex'
               var result = await this.$http.get('/usuarios/all');
               let response = result.data;
               this.items = response;
-                
                 
             }catch (error) {
                 console.log('error', error);
@@ -203,6 +249,8 @@ import {mapGetters} from 'vuex'
         },
 
         async handleClick() { 
+          localStorage.setItem('token', this.invitado);
+          this.$cookies.set("token",this.invitado);
           this.$store.dispatch('user',this.invitado); 
           this.$router.push('/'); 
         }
