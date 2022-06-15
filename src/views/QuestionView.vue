@@ -189,7 +189,7 @@ export default {
               var result = await this.$http.post('nasa/create',this.nasa);
               let response = result.data;
               this.cambio = response;
-              this.$router.push({name:'entregado',params:{id:this.nasa.id_enunciado}});
+              this.$router.push({name:'Entrega Realizada | SE',params:{id:this.nasa.id_enunciado}});
 
             }catch (error){
               console.log('error', error);

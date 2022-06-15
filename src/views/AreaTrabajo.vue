@@ -200,6 +200,9 @@ export default {
       id_estudiante: null,
       sexo:null,
       edad:0,
+      anos_experiencia: null,
+      entidad: null,
+      titulo_profesional: null,
       solucion: "",
       resultado: "",
       fecha_termino: "",
@@ -285,7 +288,7 @@ export default {
             var result2 = await this.$http.put('datos/'+this.idData,this.dataset);
             let response2 = result2.data;
             this.cambio = response2;
-            this.$router.push({name:'quest',params:{id1:this.items.id,id2:this.idData}});
+            this.$router.push({name:'Cuestionario | SE',params:{id1:this.items.id,id2:this.idData}});
         },
         handleClick() { 
         this.$store.dispatch('user',null); 
@@ -363,6 +366,9 @@ export default {
           this.dataset.nro_lineas = this.lineas
           this.dataset.sexo = this.user.sexo;
           this.dataset.edad = this.user.edad;
+          this.dataset.anos_experiencia = this.user.anos_experiencia;
+          this.dataset.entidad = this.user.entidad;
+          this.dataset.titulo_profesional = this.user.titulo_profesional;
           this.dataset.id_enunciado = this.items.id;
           this.dataset.solucion = this.code;
           this.dataset.resultado = document.getElementById("output").value;

@@ -115,12 +115,12 @@ export default {
           if(this.user.nombres=="invitado"){
             var result2 = await this.$http.post('datos/create',{id_enunciado:enunciadoID});
             let response2 = result2.data;
-            this.$router.push({name:'area',params:{id1:enunciadoID,id2:response2.id}});
+            this.$router.push({name:'Area Trabajo | SE',params:{id1:enunciadoID,id2:response2.id}});
           }
           else{
             var result3 = await this.$http.post('datos/create',{id_enunciado:enunciadoID,id_estudiante:this.user.id});
             let response3 = result3.data;
-            this.$router.push({name:'area',params:{id1:enunciadoID,id2:response3.id}});
+            this.$router.push({name:'Area Trabajo | SE',params:{id1:enunciadoID,id2:response3.id}});
           }
         },
 

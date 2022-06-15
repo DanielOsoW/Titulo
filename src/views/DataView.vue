@@ -89,7 +89,7 @@ export default {
 
         goToData(item) {
           const enunciadoID = item;
-          this.$router.push({name:'dataArea',params:{id:enunciadoID}});
+          this.$router.push({name:'Data Area | SE',params:{id:enunciadoID}});
         },
 
         handleClick() { 

@@ -13,7 +13,8 @@
             class="pa-2"
             v-for="(item, i) in items"
             :key="i">
-            <v-card
+            <v-container>
+              <v-card
               class="pa-2" 
               color="blue darken-3"
               dark
@@ -32,6 +33,8 @@
                   </v-btn>
               </v-card-actions>
             </v-card>
+            </v-container>
+            
     </v-row>
   </v-col>
 </v-container>
@@ -91,7 +94,7 @@ export default {
 
         goToProgress(item) {
           const enunciadoID = item;
-          this.$router.push({name:'progressArea',params:{id:enunciadoID}});
+          this.$router.push({name:'Progress Area | SE',params:{id:enunciadoID}});
         },
 
         handleClick() { 

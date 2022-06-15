@@ -1,5 +1,7 @@
 <template> 
-	<form @submit.prevent="handleSubmit"> 
+<v-container>
+
+    <form @submit.prevent="handleSubmit"> 
 		<error v-if="error" :error="error"/> 
 		<v-content> 
 			<v-card width="500" class="mx-auto mt-9"> 
@@ -18,7 +20,26 @@
 				</v-card-actions> 
 			</v-card> 
 		</v-content> 
-	</form> 
+	</form>
+    
+    <v-snackbar
+      v-model="snackbar"
+    >
+      {{ text }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="pink"
+          text
+          v-bind="attrs"
+          @click="snackbar = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
+</v-container>
+	
 </template> 
  
 <script> 
@@ -29,11 +50,13 @@
             Error 
         }, 
         data() { 
-            return{ 
+            return{
+                snackbar:false, 
                 correo: '', 
                 password: '', 
                 error: '', 
-                showPassword:false 
+                showPassword:false,
+                text: 'Usuario/contraseña erroneos' 
             } 
         }, 
         methods: { 
@@ -52,7 +75,7 @@
                     this.$store.dispatch('user', response2);
                     this.$router.push('/');
                 } catch(e) { 
-                        this.error = 'Usuario/contraseña erroneos' 
+                        this.snackbar = true; 
                 } 
                 
             } 

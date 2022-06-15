@@ -4,109 +4,122 @@ import HomeView from '../views/HomeView.vue'
 
 Vue.use(VueRouter)
 
-export default new VueRouter({
-  mode:'history',
+const router = new VueRouter({
+  mmode:'history',
+  base: process.env.BASE_URL,
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: HomeView
+      name: 'Sist. Enunciados | DIINF USACH',
+      component: HomeView,
+      nombre:'Sist. Enunciados | DIINF USACH'
     },
     {
       path: '/enunciados',
-      name: 'enunciados',
+      name: 'Enunciados | SE',
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "enunciados" */ '../views/EnunciadosView.vue')
+      component: () => import(/* webpackChunkName: "enunciados" */ '../views/EnunciadosView.vue'),
+      nombre:'Enunciados | SE'
     },
     {
       path: '/area/:id1/:id2',
-      name: 'area',
+      name: 'Area Trabajo | SE',
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ '../views/AreaTrabajo.vue')
+      component: () => import(/* webpackChunkName: "about" */ '../views/AreaTrabajo.vue'),
+      nombre:'Area Trabajo | SE'
     },
     {
       path: '/entregado/:id',
-      name: 'entregado',
+      name: 'Entrega Realizada | SE',
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ '../views/EntregaView.vue')
+      component: () => import(/* webpackChunkName: "about" */ '../views/EntregaView.vue'),
+      nombre:'Entrega Realizada | SE'
     },
 
     {
       path: '/login',
-      name: 'login',
+      name: 'Login | SE',
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "login" */ '../views/loginView.vue')
+      component: () => import(/* webpackChunkName: "login" */ '../views/loginView.vue'),
+      nombre:'Login | SE'
     },
 
     {
       path: '/register',
-      name: 'register',
+      name: 'Registrame | SE',
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "register" */ '../views/registerView.vue')
+      component: () => import(/* webpackChunkName: "register" */ '../views/registerView.vue'),
+      nombre:'Registrame | SE'
     },
 
     {
       path: '/error',
-      name: 'error',
+      name: 'Error | SE',
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "error" */ '../views/errorView.vue')
+      component: () => import(/* webpackChunkName: "error" */ '../views/errorView.vue'),
+      nombre:'Error | SE'
     },
 
     {
       path: '/data',
-      name: 'data',
+      name: 'Datos | SE',
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "data" */ '../views/DataView.vue')
+      component: () => import(/* webpackChunkName: "data" */ '../views/DataView.vue'),
+      nombre:'Datos | SE'
     },
 
     {
       path: '/dataArea/:id',
-      name: 'dataArea',
+      name: 'Data Area | SE',
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "dataArea" */ '../views/DataAreaView.vue')
+      component: () => import(/* webpackChunkName: "dataArea" */ '../views/DataAreaView.vue'),
+      nombre:'Data Area | SE'
     },
 
     {
       path: '/quest/:id1/:id2',
-      name: 'quest',
+      name: 'Cuestionario | SE',
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "quest" */ '../views/QuestionView.vue')
+      component: () => import(/* webpackChunkName: "quest" */ '../views/QuestionView.vue'),
+      nombre:'Cuestionario | SE'
     },
 
     {
       path: '/progress',
-      name: 'progress',
+      name: 'Mi Progreso | SE',
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "progress" */ '../views/ProgressView.vue')
+      component: () => import(/* webpackChunkName: "progress" */ '../views/ProgressView.vue'),
+      nombre:'Mi Progreso | SE'
     },
 
     {
       path: '/progressArea/:id',
-      name: 'progressArea',
+      name: 'Progress Area | SE',
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "progressArea" */ '../views/ProgressAreaView.vue')
+      component: () => import(/* webpackChunkName: "progressArea" */ '../views/ProgressAreaView.vue'),
+      nombre:''
     },
     {
       path: '/prueba',
@@ -117,5 +130,12 @@ export default new VueRouter({
       component: () => import(/* webpackChunkName: "prueba" */ '../views/PruebaView.vue')
     }
   ]
+  
 })
 
+router.beforeEach((to, from, next) => {
+  document.title = to.name;
+  next();
+});
+
+export default router

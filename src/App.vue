@@ -93,12 +93,12 @@
             <v-list-item-title>Home</v-list-item-title>
           </v-list-item>
 
-          <v-list-item>
+          <!--v-list-item>
             <v-list-item-icon>
               <v-icon>mdi-account</v-icon>
             </v-list-item-icon>
             <v-list-item-title>Mi Cuenta</v-list-item-title>
-          </v-list-item>
+          </v-list-item-->
 
           <v-list-item @click="enunciados()">
             <v-list-item-icon>
@@ -107,12 +107,12 @@
             <v-list-item-title>Enunciados</v-list-item-title>
           </v-list-item>
 
-          <v-list-item v-if="user.rol!=1">
+          <!--v-list-item v-if="user.rol!=1">
             <v-list-item-icon>
               <v-icon>mdi-filter-check-outline</v-icon>
             </v-list-item-icon>
             <v-list-item-title>Revisar Enunciados</v-list-item-title>
-          </v-list-item>
+          </v-list-item-->
 
           <v-list-item v-if="user.rol==1 && user.nombres!='invitado'" @click="progress()">
             <v-list-item-icon>
