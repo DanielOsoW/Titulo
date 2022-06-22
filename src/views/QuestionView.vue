@@ -120,8 +120,8 @@ export default {
     items: null,
     cambio: null,
     nasa:{
-        id_enunciado: 0,
-        id_data: 0,
+        enunciado: 0,
+        data: 0,
         mental: 0,
         fisico: 0,
         tiempo: 0,
@@ -168,8 +168,8 @@ export default {
                   enunciadoID = enunciadoID + "";
                 }
               }
-              this.nasa.id_enunciado = parseInt(enunciadoID);
-              this.nasa.id_data = parseInt(dataID);
+              this.nasa.enunciado = parseInt(enunciadoID);
+              this.nasa.data = parseInt(dataID);
 
             }catch (error) {
                 console.log('error', error);
@@ -189,7 +189,7 @@ export default {
               var result = await this.$http.post('nasa/create',this.nasa);
               let response = result.data;
               this.cambio = response;
-              this.$router.push({name:'Entrega Realizada | SE',params:{id:this.nasa.id_enunciado}});
+              this.$router.push({name:'Entrega Realizada | SE',params:{id:this.nasa.enunciado}});
 
             }catch (error){
               console.log('error', error);

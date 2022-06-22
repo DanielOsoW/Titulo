@@ -13,7 +13,7 @@ import * as VuePrismEditor from "vue-prism-editor"
 Vue.config.productionTip = false
 
 const axiosInstance = axios.create({ 
-  baseURL: 'http://127.0.0.1:8081'
+  baseURL: 'https://sediinf-back.herokuapp.com/'
 })
 
 //Para acceder a axios desde this.$http

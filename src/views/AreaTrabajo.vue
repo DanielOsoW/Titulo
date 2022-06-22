@@ -196,13 +196,13 @@ export default {
     lineas: 0,
     cambio: {},
     dataset:{
-      id_enunciado: 0,
-      id_estudiante: null,
+      enunciado: 0,
+      usuario: null,
       sexo:null,
       edad:0,
       anos_experiencia: null,
-      entidad: null,
-      titulo_profesional: null,
+      rol: null,
+      carrera: null,
       solucion: "",
       resultado: "",
       fecha_termino: "",
@@ -361,15 +361,15 @@ export default {
             }
           }
           if(this.user.nombres != "invitado"){
-            this.dataset.id_estudiante = this.user.id;
+            this.dataset.usuario = this.user.id;
           }
           this.dataset.nro_lineas = this.lineas
           this.dataset.sexo = this.user.sexo;
           this.dataset.edad = this.user.edad;
           this.dataset.anos_experiencia = this.user.anos_experiencia;
-          this.dataset.entidad = this.user.entidad;
-          this.dataset.titulo_profesional = this.user.titulo_profesional;
-          this.dataset.id_enunciado = this.items.id;
+          this.dataset.rol = this.user.rol;
+          this.dataset.carrera = this.user.carrera;
+          this.dataset.enunciado = this.items.id;
           this.dataset.solucion = this.code;
           this.dataset.resultado = document.getElementById("output").value;
 

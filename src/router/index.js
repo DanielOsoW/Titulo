@@ -24,6 +24,24 @@ const router = new VueRouter({
       nombre:'Enunciados | SE'
     },
     {
+      path: '/nuevoenunciado',
+      name: 'Nuevo Enunciado | SE',
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import(/* webpackChunkName: "nuevoenunciado" */ '../views/AgregarEnunciadoView.vue'),
+      nombre:'Enunciados | SE'
+    },
+    {
+      path: '/revisarenunciados',
+      name: 'Revisar Enunciados | SE',
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import(/* webpackChunkName: "revisarenunciados" */ '../views/RevisarEnunciadosView.vue'),
+      nombre:'Revisar Enunciados | SE'
+    },
+    {
       path: '/area/:id1/:id2',
       name: 'Area Trabajo | SE',
       // route level code-splitting
@@ -120,6 +138,15 @@ const router = new VueRouter({
       // which is lazy-loaded when the route is visited.
       component: () => import(/* webpackChunkName: "progressArea" */ '../views/ProgressAreaView.vue'),
       nombre:''
+    },
+    {
+      path: '/asignarrol',
+      name: 'Asignar Roles | SE',
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import(/* webpackChunkName: "asignarrol" */ '../views/AsignarRolView.vue'),
+      nombre:'Asignar Roles | SE'
     },
     {
       path: '/prueba',

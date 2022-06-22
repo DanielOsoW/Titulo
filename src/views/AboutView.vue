@@ -100,7 +100,7 @@ export default {
         //Función asíncrona para consultar los datos
         getData: async function(){
           try {
-              var result = await this.$http.get('/enunciados/all');
+              var result = await this.$http.get('/enunciados/allactive');
               let response = result.data;
               this.items = response;
                 

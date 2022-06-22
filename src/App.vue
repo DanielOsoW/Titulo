@@ -107,35 +107,40 @@
             <v-list-item-title>Enunciados</v-list-item-title>
           </v-list-item>
 
-          <!--v-list-item v-if="user.rol!=1">
+          <v-list-item v-if="user.rol==1" @click="revisarenunciados()">
             <v-list-item-icon>
               <v-icon>mdi-filter-check-outline</v-icon>
             </v-list-item-icon>
             <v-list-item-title>Revisar Enunciados</v-list-item-title>
-          </v-list-item-->
+          </v-list-item>
 
-          <v-list-item v-if="user.rol==1 && user.nombres!='invitado'" @click="progress()">
+          <v-list-item v-if="user.rol<3 && user.nombres!='invitado'" @click="agregarenunciados()">
             <v-list-item-icon>
-              <v-icon>mdi-filter-check-outline</v-icon>
+              <v-icon>mdi-plus</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Agregar Enunciados</v-list-item-title>
+          </v-list-item>
+
+          <v-list-item v-if="user.nombres!='invitado'" @click="progress()">
+            <v-list-item-icon>
+              <v-icon>mdi-widgets</v-icon>
             </v-list-item-icon>
             <v-list-item-title>Mi Progreso</v-list-item-title>
           </v-list-item>
 
-          <v-list-item v-if="user.rol!=1" @click="datos()">
+          <v-list-item v-if="user.rol==1" @click="datos()">
             <v-list-item-icon>
               <v-icon>mdi-database-outline</v-icon>
             </v-list-item-icon>
             <v-list-item-title>Datos</v-list-item-title>
           </v-list-item>
 
-          <!--router-link to="prueba">
-          <v-list-item>
+          <v-list-item v-if="user.rol==1" @click="asignarroles()">
             <v-list-item-icon>
               <v-icon>mdi-account</v-icon>
             </v-list-item-icon>
-            <v-list-item-title>Prueba</v-list-item-title>
+            <v-list-item-title>Asignar Roles</v-list-item-title>
           </v-list-item>
-          </router-link-->
 
           <!--router-link to="area">
           <v-list-item>
@@ -209,6 +214,15 @@ export default {
       },
     enunciados() {
         this.$router.push('/enunciados');
+      },
+    revisarenunciados() {
+        this.$router.push('/revisarenunciados');
+      },
+    agregarenunciados() {
+        this.$router.push('/nuevoenunciado');
+      },
+    asignarroles() {
+        this.$router.push('/asignarrol');
       },
     datos() {
         this.$router.push('/data');

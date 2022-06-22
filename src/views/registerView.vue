@@ -54,18 +54,20 @@
           ></v-select>
 
         <v-select
+              v-if="carCheck==true"
               class= "d-flex pa-2"  
-              v-model="titulo_profesional"
-              :items="carreras"
+              v-model="carrera"
+              :items="items"
               label="Título Profesional"
               required
         ></v-select>
 
         <v-select 
+              v-if="carCheck==true"
               class= "d-flex pa-2" 
-              v-model="entidad"
+              v-model="rol"
               :rules="entidadRules"
-              :items="roles"
+              :items="items2"
               label="Yo soy..."
               required
         ></v-select>
@@ -108,19 +110,6 @@
         @click:append="showPassword2 = !showPassword2">
         </v-text-field>
 
-        <div v-if="valid1">{{texto1}}</div>
-        <!--v-select
-        v-model="select"
-        :items="allCarreras"
-        :rules="[v => !!v || 'Item is required']"
-        label="Carrera"
-        required
-        ></v-select>
-
-        <div>{{cantiCarreras}}{{allCarreras}}</div-->
-        <!--div>{{nombres}}{{apellido1}}{{apellido2}}{{correo}}{{nueva1}}{{nueva2}}{{edad}}{{sexo}}</div-->
-
-        
         <v-btn
           :disabled="!valid"
           color="success"
@@ -138,48 +127,65 @@
         Borrar Formulario
         </v-btn>
 
-        <!--v-btn
-        color="warning"
-        @click="resetValidation"
-        >
-        Reset Validation
-        </v-btn-->
     </v-form>
+
+  <v-snackbar
+      v-model="snackbar"
+    >
+      {{ text }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="pink"
+          text
+          v-bind="attrs"
+          @click="snackbar = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
+
 </v-container>
 </template>
 
 <script>
   export default {
     data: () => ({
+        snackbar: false,
+        text: `Debes ingresar los datos requeridos`,
         nombres:null,
         apellido1:null,
         apellido2:null,
         correo:null,
         nueva1: null,
         nueva2: null,
-        roles:[
-        'Estudiante',
-        'Profesor',
-        'Profesional del área'
-      ],
-      carreras:[
-        'INGENIERÍA CIVIL EN INFORMÁTICA',
-        'INGENIERÍA DE EJECUCIÓN EN COMPUTACIÓN E INFORMÁTICA',
-        'ANALISTA EN COMPUTACIÓN CIENTÍFICA / LICENCIATURA EN CIENCIA DE LA COMPUTACIÓN',
-        'PEDAGOGÍA EN MATEMÁTICA Y COMPUTACIÓN'
-      ],
+        roles:[],
+        rol: null,
+        idrol:null,
+        carreras:[],
+        carrera:null,
+        idcarrera:null,
         edad: null,
         sexo:"",
         anos_experiencia:null,
-        titulo_profesional:null,
-        entidad:null,
         cantiCarreras: null,
-        allCarreras: [],
+        items: [],
+        items2: [],
         showPassword1:false,
         showPassword2:false,
         valid: true,
         name: '',
-        nameRules: [
+        checkbox: false,
+        carCheck: false,
+        usuario: null,
+        texto1: null,
+        sexos: [
+        'Femenino',
+        'Masculino',
+        'Prefiero no decirlo'
+      ],
+      nameRules: [
           v => !!v || 'Name is required',
           v => (v && v.length <= 10) || 'Name must be less than 10 characters',
         ],
@@ -211,17 +217,7 @@
         expRules: [
         v => !!v || 'Experiencia requerida',
         v => (v && v > -1) || 'Experiencia inválida',
-        ],      
-        select: null,
-        checkbox: false,
-        usuario: null,
-        texto1: null,
-        valid1: false,
-        sexos: [
-        'Femenino',
-        'Masculino',
-        'Prefiero no decirlo'
-      ],
+        ],
     }),
 
     methods: {
@@ -235,35 +231,51 @@
         this.$refs.form.resetValidation()
       },
 
-      /*//Función asíncrona para consultar los datos
+      //Función asíncrona para consultar los datos
         getData: async function(){
             try {
                 let response = await this.$http.get('carreras/all');
                 this.carreras = response.data;
                 this.cantiCarreras = this.carreras.length;
                 for(var i = 0;i<this.cantiCarreras;i++){
-                  if (i==0){
-                    this.allCarreras[i]='Selecciona una carrera';
-                  }
-                  else{
-                    this.allCarreras[i] = this.carreras[i].nombre_carrera;
-                  }
+                  var nombre = (this.carreras[i].nombre_carrera)+"";
+                  this.items[i] = nombre;
                 }
+                var result2 = await this.$http.get('roles/all');
+                let response2 = result2.data;
+                this.roles = response2;
+                for(var j = 1;j<this.roles.length;j++){
+                  var nombre2 = (this.roles[j].nombre_rol)+"";
+                  this.items2[j] = nombre2;
+                }
+
+                this.carCheck = true;
             } catch (error) {
                 console.log('error', error);
             }
-        },*/
+        },
 
 
         register: async function() {
-          this.valid1 = false;
+          this.snackbar = false;
           if(this.nueva1!=this.nueva2){
-            this.texto1='Las contraseñas no son iguales';
-            this.valid1 = true;
+            this.text = "Las contraseñas son distintas"
+            this.snackbar = true;
           }
-          else if(this.nombres != '' && this.paterno!='' && this.materno != '' &&  this.correo != '' && this.nueva1!='' && this.nueva2!='' &&  this.titulo_profesional != '' && this.anos_experiencia!=null && this.entidad!='' && this.edad!=null && this.sexo!=''){
+          else if(this.nombres != '' && this.paterno!='' && this.materno != '' &&  this.correo != '' && this.nueva1!='' && this.nueva2!='' &&  this.carrera != ''  &&  this.rol != '' && this.anos_experiencia!=null && this.edad!=null && this.sexo!=''){
             try {
-                var result = await this.$http.post('usuarios/create',{"apellido1":this.apellido1, "apellido2":this.apellido2, "nombres":this.nombres, "correo":this.correo, "password":this.nueva1, "rol":1, "carrera":1, "titulo_profesional":this.titulo_profesional, "anos_experiencia":this.anos_experiencia, "entidad":this.entidad, "edad":this.edad, "sexo":this.sexo});
+                for(var j=0;j<this.carreras.length;j++){
+                  if(this.carrera==this.carreras[j].nombre_carrera){
+                    this.idcarrera = this.carreras[j].id;
+                  }
+                }
+                for(var k=0;k<this.roles.length;k++){
+                  if(this.rol==this.roles[k].nombre_rol){
+                    this.idrol = this.roles[k].id;
+                  }
+                }
+                console.log(this.idcarrera,this.idrol);
+                var result = await this.$http.post('usuarios/create',{"apellido1":this.apellido1, "apellido2":this.apellido2, "nombres":this.nombres, "correo":this.correo, "password":this.nueva1, "rol":this.idrol, "carrera":this.idcarrera, "anos_experiencia":this.anos_experiencia,"edad":this.edad, "sexo":this.sexo});
                 let response2 = result.data;
                 this.usuario = response2.data;
                 this.texto1='Información editada con éxito';  
@@ -273,15 +285,15 @@
             }
           }
           else{
-            this.texto1='El usuario no se ha podido crear';
-            this.valid1 = true;
+            this.text='El usuario no se ha podido crear. Ingrese la información requerida';
+            this.snackbar = true;
           }
           
         },
     },
-    /*//Función que se ejecuta al cargar el componente
+    //Función que se ejecuta al cargar el componente
     created:function(){
         this.getData();
-    }*/
+    }
   }
 </script>

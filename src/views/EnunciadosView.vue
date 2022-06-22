@@ -100,7 +100,7 @@ export default {
             this.$router.push('/');
           }
           try {
-              var result = await this.$http.get('/enunciados/all');
+              var result = await this.$http.get('/enunciados/allactive');
               let response = result.data;
               this.items = response;
                 
@@ -113,12 +113,12 @@ export default {
         goToEnunciado: async function(item) {
           const enunciadoID = item;
           if(this.user.nombres=="invitado"){
-            var result2 = await this.$http.post('datos/create',{id_enunciado:enunciadoID});
+            var result2 = await this.$http.post('datos/create',{"enunciado":enunciadoID});
             let response2 = result2.data;
             this.$router.push({name:'Area Trabajo | SE',params:{id1:enunciadoID,id2:response2.id}});
           }
           else{
-            var result3 = await this.$http.post('datos/create',{id_enunciado:enunciadoID,id_estudiante:this.user.id});
+            var result3 = await this.$http.post('datos/create',{"enunciado":enunciadoID,"usuario":this.user.id});
             let response3 = result3.data;
             this.$router.push({name:'Area Trabajo | SE',params:{id1:enunciadoID,id2:response3.id}});
           }

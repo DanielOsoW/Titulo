@@ -56,20 +56,20 @@
                               ></v-select>
                            </v-card-text>
 
-                           <v-card-text>
+                           <v-card-text v-if="carCheck==true">
                               Título Profesional
                               <v-select 
-                                v-model="invitado.titulo_profesional"
-                                :items="carreras"
+                                v-model="carrera"
+                                :items="items"
                                 required
                               ></v-select>
                            </v-card-text>
 
-                           <v-card-text>
+                           <v-card-text v-if="carCheck==true">
                               Yo soy...
                               <v-select 
-                                v-model="invitado.entidad"
-                                :items="roles"
+                                v-model="rol"
+                                :items="items2"
                                 required
                               ></v-select>
                            </v-card-text>
@@ -83,7 +83,7 @@
                             >Cancelar</v-btn>
 
                             <v-btn
-                                v-if="invitado.sexo=='' || invitado.edad==0 || invitado.anos_experiencia=='' || invitado.entidad=='' || invitado.titulo_profesional==''"
+                                v-if="invitado.sexo=='' || invitado.edad==0 || invitado.anos_experiencia=='' || carrera=='' || rol==''"
                                 text
                                 color="gray"
                                 @click="snackbar = true"
@@ -115,26 +115,14 @@
 </div>
 
 <div>
-  <v-carousel v-model="model">
+  <v-carousel cycle>
     <v-carousel-item
-      v-for="(a, i) in colors"
+      v-for="(item,i) in images"
       :key="i"
+      :src=item.src
+      reverse-transition="fade-transition"
+      transition="fade-transition"
     >
-      <v-sheet
-        :color="a.color"
-        height="100%"
-        tile
-      >
-        <v-row
-          class="fill-height"
-          align="center"
-          justify="center"
-        >
-          <div class="text-h2">
-            {{ a.titulo }}
-          </div>
-        </v-row>
-      </v-sheet>
     </v-carousel-item>
   </v-carousel>
   <!--h1>COSAS {{user}}</h1-->
@@ -167,18 +155,12 @@ import {mapGetters} from 'vuex'
     data: () => ({
       model: 0,
       items: [],
-      roles:[
-        'Estudiante',
-        'Profesor',
-        'Profesional del área'
-      ],
-      carreras:[
-        'INGENIERÍA CIVIL EN INFORMÁTICA',
-        'INGENIERÍA DE EJECUCIÓN EN COMPUTACIÓN E INFORMÁTICA',
-        'ANALISTA EN COMPUTACIÓN CIENTÍFICA / LICENCIATURA EN CIENCIA DE LA COMPUTACIÓN',
-        'PEDAGOGÍA EN MATEMÁTICA Y COMPUTACIÓN'
-      ],
-      soy:"",
+      items2: [],
+      roles:[],
+      rol: null,
+      carreras:[],
+      carrera:null,
+      carCheck: false,
       checkInvitado: false,
       snackbar: false,
       text: `Debes ingresar edad y sexo para poder continuar como invitado`,
@@ -191,36 +173,28 @@ import {mapGetters} from 'vuex'
         nombres:"invitado",
         edad:null,
         sexo:"",
-        anos_experiencia:null,
-        titulo_profesional:"",
-        entidad:""
+        carrera:null,
+        rol:null,
       },
       
-      colors: [
-        {
-        titulo:'Variables',
-        color:'primary',
-        },
-        {
-        titulo:'Condicionales',
-        color:'secondary',
-        },
-        {
-        titulo:'Ciclos',
-        color:'yellow darken-2',
-        },
-        {
-        titulo:'Ordenamiento',
-        color: 'red',
-        },
-        {
-        titulo:'Funciones',
-        color:'orange',
-        },
+      images: [
+          {
+            src: "https://cdn.pixabay.com/photo/2016/11/19/14/00/code-1839406_1280.jpg",
+          },
+          {
+            src: "https://cdn.pixabay.com/photo/2016/11/19/14/16/man-1839500_1280.jpg",
+          },
+          {
+            src: "https://cdn.pixabay.com/photo/2016/03/27/18/54/technology-1283624_1280.jpg",
+          },
+          {
+            src: "https://cdn.pixabay.com/photo/2020/01/22/12/33/python-4785225_1280.jpg",
+          },
+          {
+            src: "https://i.ytimg.com/vi/aIQMXbFZyVk/maxresdefault.jpg",
+          },
+        ],
         
-       
-        
-      ],
       edadRules: [
         v => !!v || 'Edad requerida',
         v => (v && v > 10 && v < 100) || 'Edad inválida',
@@ -235,9 +209,22 @@ import {mapGetters} from 'vuex'
         //Función asíncrona para consultar los datos
         getData: async function(){
           try {
-              var result = await this.$http.get('/usuarios/all');
-              let response = result.data;
-              this.items = response;
+              let response = await this.$http.get('carreras/all');
+                this.carreras = response.data;
+                this.cantiCarreras = this.carreras.length;
+                for(var i = 0;i<this.cantiCarreras;i++){
+                  var nombre = (this.carreras[i].nombre_carrera)+"";
+                  this.items[i] = nombre;
+                }
+                var result2 = await this.$http.get('roles/all');
+                let response2 = result2.data;
+                this.roles = response2;
+                for(var j = 1;j<this.roles.length;j++){
+                    var nombre2 = (this.roles[j].nombre_rol)+"";
+                    this.items2[j] = nombre2;
+                }
+
+                this.carCheck = true;
                 
             }catch (error) {
                 console.log('error', error);
@@ -249,6 +236,16 @@ import {mapGetters} from 'vuex'
         },
 
         async handleClick() { 
+          for(var j=0;j<this.carreras.length;j++){
+            if(this.carrera==this.carreras[j].nombre_carrera){
+              this.invitado.carrera = this.carreras[j].id;
+            }
+          }
+          for(var k=0;k<this.roles.length;k++){
+            if(this.rol==this.roles[k].nombre_rol){
+              this.invitado.rol = this.roles[k].id;
+            }
+          }
           localStorage.setItem('token', this.invitado);
           this.$cookies.set("token",this.invitado);
           this.$store.dispatch('user',this.invitado); 

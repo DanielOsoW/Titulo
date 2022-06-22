@@ -70,13 +70,13 @@ export default {
               var result = await this.$http.get('/progress/'+this.user.id);
               let response = result.data;
               this.datos = response;
-              var result2 = await this.$http.get('/enunciados/all');
+              var result2 = await this.$http.get('/enunciados/allactive');
               let response2 = result2.data;
               this.enunciados = response2;
               var contador=0;
               for(var i=0; i<this.enunciados.length; i++){
                   for(var j=0; j<this.datos.length; j++){
-                      if(this.enunciados[i].id==this.datos[j].id_enunciado){
+                      if(this.enunciados[i].id==this.datos[j].enunciado){
                           this.items[contador]=this.enunciados[i];
                           contador = contador + 1;
                           j=this.datos.length;
