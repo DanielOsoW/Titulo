@@ -23,7 +23,7 @@
                 {{item.titulo}}
               </v-card-title>
 
-              <v-card-subtitle>{{i}} {{item.enunciado}}</v-card-subtitle>
+              <v-card-subtitle>{{item.i}}. {{item.enunciado}}</v-card-subtitle>
 
               <v-card-actions>
                   <v-dialog
