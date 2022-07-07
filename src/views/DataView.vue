@@ -29,7 +29,7 @@
               dark
             >
               <v-card-title class="text-h5">
-                {{item.titulo}}
+                {{item.id}} {{item.titulo}}
               </v-card-title>
 
               <v-card-subtitle>{{item.enunciado}}</v-card-subtitle>
