@@ -13,7 +13,7 @@ import * as VuePrismEditor from "vue-prism-editor"
 Vue.config.productionTip = false
 
 const axiosInstance = axios.create({ 
-  baseURL: 'http://143.198.131.116:8081/'
+  baseURL: 'http://143.198.131.116:8080/'
 })
 
 //Para acceder a axios desde this.$http
