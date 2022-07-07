@@ -20,10 +20,10 @@
               dark
             >
               <v-card-title class="text-h5">
-                {{item.titulo}}
+                {{i+1}}. {{item.titulo}}
               </v-card-title>
 
-              <v-card-subtitle>{{item.i}}. {{item.enunciado}}</v-card-subtitle>
+              <v-card-subtitle>{{item.enunciado}}</v-card-subtitle>
 
               <v-card-actions>
                   <v-dialog
