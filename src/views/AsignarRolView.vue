@@ -7,7 +7,7 @@
         >Asignar Roles</v-toolbar>
         <v-card>
     <v-card-title>
-      Nutrition
+      Usuarios Registrados
       <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
