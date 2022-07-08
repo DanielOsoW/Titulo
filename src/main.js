@@ -16,7 +16,7 @@ const axiosInstance = axios.create({
   baseURL: 'http://143.198.131.116:8080/'
 })
 
-//Para acceder a axios desde this.$http
+//Para acceder a axios desde this.$http.
 Vue.prototype.$http = axiosInstance;
 
 axios.defaults.headers.common['Authorization'] = 'Bearer' + localStorage.getItem('token');
