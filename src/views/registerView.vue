@@ -57,6 +57,7 @@
               v-if="carCheck==true"
               class= "d-flex pa-2"  
               v-model="carrera"
+              :rules="tituloRules"
               :items="items"
               label="Título Profesional"
               required
@@ -186,13 +187,13 @@
         'Prefiero no decirlo'
       ],
       nameRules: [
-          v => !!v || 'Name is required',
-          v => (v && v.length <= 10) || 'Name must be less than 10 characters',
+          v => !!v || 'Se requiere su nombre',
+          v => (v && v.length <= 40) || 'El nombre no puede sobrepasar los 40 caracteres',
         ],
         email: '',
         emailRules: [
-          v => !!v || 'E-mail is required',
-          v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+          v => !!v || 'Se requiere su E-mail',
+          v => /.+@.+\..+/.test(v) || 'El E-mail proporcionado debe ser válido',
         ],
         apellidoRules: [
           v => !!v || 'Se requiere el apellido',
@@ -213,6 +214,10 @@
         entidadRules: [
           v => !!v || 'Entidad requerida',
           v => (v != null) || 'Entidad requerida',
+        ],
+        tituloRules: [
+          v => !!v || 'Título requerida',
+          v => (v != null) || 'Título requerida',
         ],
         expRules: [
         v => !!v || 'Experiencia requerida',

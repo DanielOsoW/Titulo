@@ -48,7 +48,7 @@
         >
           <td>{{ item.nombres }}</td>
           <td>{{ item.apellido1 }}</td>
-          <td>{{ item.apellido1 }}</td>
+          <td>{{ item.apellido2 }}</td>
           <td>{{ item.correo }}</td>
           <td align="justify center">
             <v-btn v-if="item.rol==2" color="red" @click="editRolToEstudiante(item)">Quitar</v-btn>
