@@ -11,15 +11,15 @@ pipeline {
                 steps{
                     parallel(
                         a: {
-                            dir("/var/lib/jenkins/workspace/Memoria/backTitulo"){			
+                            dir("/var/lib/jenkins/workspace/backTitulo"){			
                                 sh 'source venv/bin/activate'
-                                sh 'python manage.py runserver 8081'
+                                sh 'python manage.py runserver 0.0.0.0:8081'
                             }
                         },
                         b: {
-                            dir("/var/lib/jenkins/workspace/Memoria/Titulo"){
-                                sh 'export NODE_OPTIONS=--max_old_space_size=8096'
-                                sh 'npm run serve — –port 3000'
+                            dir("/var/lib/jenkins/workspace/Titulo"){
+                                sleep(10)//sh 'export NODE_OPTIONS=--max_old_space_size=8096'
+                                sh 'npm run serve'
                             }
                         }
                     ) 
