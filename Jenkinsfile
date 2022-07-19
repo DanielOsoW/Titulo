@@ -11,9 +11,8 @@ pipeline {
                 steps{
                     parallel(
                         a: {
-                            dir("/var/lib/jenkins/workspace/memoria/backTitulo"){			
-                                sh 'source venv/bin/activate'
-                                sh 'python manage.py runserver 0.0.0.0:8081'
+                            dir("/var/lib/jenkins/workspace/backTitulo"){
+                                sh 'python3 manage.py runserver 0.0.0.0:8081'
                             }
                         },
                         b: {
