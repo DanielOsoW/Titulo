@@ -11,14 +11,16 @@ pipeline {
                 steps{
                     parallel(
                         a: {
-                            dir("/var/lib/jenkins/workspace/backTitulo"){			
+                            dir("/var/lib/jenkins/workspace/memoria/backTitulo"){			
                                 sh 'source venv/bin/activate'
                                 sh 'python manage.py runserver 0.0.0.0:8081'
                             }
                         },
                         b: {
-                            dir("/var/lib/jenkins/workspace/Titulo"){
-                                sleep(10)//sh 'export NODE_OPTIONS=--max_old_space_size=8096'
+                            dir("/var/lib/jenkins/workspace/memoria/Titulo"){
+                                sleep(5)//sh 'export NODE_OPTIONS=--max_old_space_size=8096'
+                                sh 'npm install'
+                                sh 'npm update vue-template-compiler'
                                 sh 'npm run serve'
                             }
                         }
