@@ -216,8 +216,8 @@
           v => (v != null) || 'Entidad requerida',
         ],
         tituloRules: [
-          v => !!v || 'Título requerida',
-          v => (v != null) || 'Título requerida',
+          v => !!v || 'Título requerido',
+          v => (v != null) || 'Título requerido',
         ],
         expRules: [
         v => !!v || 'Experiencia requerida',
