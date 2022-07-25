@@ -5,7 +5,7 @@
         class="mt-6">
           <div class="about">
             <h1>Revisar datos de tu progreso.
-                Enunciados resultos: {{contador}}</h1>
+                Enunciados resueltos: {{contador}}</h1>
           </div>
   </v-row>
   <v-col v-if="check==true" align="justify-center" class="mt-3">
