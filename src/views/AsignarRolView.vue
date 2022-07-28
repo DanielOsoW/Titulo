@@ -9,13 +9,13 @@
     <v-card-title>
       Usuarios Registrados
       <v-spacer></v-spacer>
-      <v-text-field
+      <!--v-text-field
         v-model="search"
         append-icon="mdi-magnify"
         label="Search"
         single-line
         hide-details
-      ></v-text-field>
+      ></v-text-field-->
     </v-card-title>
     <v-simple-table :search="search">
     <template v-slot:default>

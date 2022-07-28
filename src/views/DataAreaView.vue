@@ -1,6 +1,9 @@
 <template>
 <v-container>
   <v-row>
+    <h1>Métricas enunciado {{enunciado.titulo}}</h1>
+  </v-row>
+  <v-row>
     <v-col>
     <h1>Métricas de Errores</h1>
      <apex-chart v-if="chart1==true" width="500" type="bar" :options="chartOptions1" :series="series1"></apex-chart>
@@ -34,6 +37,7 @@ export default {
 
   data: () => ({
     items: [],
+    enunciado: [],
     chart1: false,
     chart2: false,
     chart3: false,
@@ -124,6 +128,7 @@ export default {
               var ruta = this.$route.path;
               var largo = ruta.length;
               var nuevaRuta = "/data/";
+              var enunciado = "/enunciados/"
               var contador = 0;
               for (var j = 0; j < largo; j++){
                 if (ruta[j]=="/"){
@@ -131,11 +136,16 @@ export default {
                 }
                 else if(ruta[j]!="/" && contador == 2){
                   nuevaRuta = nuevaRuta + ruta[j];
+                  enunciado = enunciado + ruta[j];
                 }
               }
               var result = await this.$http.get(nuevaRuta);
               let response = result.data;
               this.items = response;
+
+              var result2 = await this.$http.get(enunciado);
+              let response2 = result2.data;
+              this.enunciado = response2;
 
               var largoJson = this.items.length;
 
