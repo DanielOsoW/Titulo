@@ -46,7 +46,7 @@
               v-bind="attrs"
               v-on="on"
             >
-            <h3>Hola {{ user.nombres }}!</h3>
+            <h6>Hola {{ user.nombres }}!</h6>
             
               <!--v-icon>mdi-dots-vertical</v-icon-->
             </v-btn>
