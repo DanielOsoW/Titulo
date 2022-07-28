@@ -35,10 +35,6 @@
         </v-col>
       </div>
 
-      <v-btn icon v-if="user">
-        <v-icon>mdi-magnify</v-icon>
-      </v-btn>
-
         <v-menu
           left
           bottom
