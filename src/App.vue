@@ -46,7 +46,8 @@
               v-bind="attrs"
               v-on="on"
             >
-            {{ user.nombres }} {{user.apellido1}} {{user.apellido2}}
+            <h3>{{ user.nombres }} {{user.apellido1}} {{user.apellido2}}</h3>
+            
               <v-icon>mdi-dots-vertical</v-icon>
             </v-btn>
           </template>
