@@ -39,16 +39,16 @@
           left
           bottom
           v-if="user"
-        ><h3>{{ user.nombres }} {{user.apellido1}} {{user.apellido2}}</h3>
+        >
           <template v-slot:activator="{ on, attrs }">
             <v-btn
               icon
               v-bind="attrs"
               v-on="on"
             >
+            <h3>Hola {{ user.nombres }}!</h3>
             
-            
-              <v-icon>mdi-dots-vertical</v-icon>
+              <!--v-icon>mdi-dots-vertical</v-icon-->
             </v-btn>
           </template>
 
