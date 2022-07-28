@@ -44,6 +44,7 @@
             <v-btn
               v-bind="attrs"
               v-on="on"
+              color="orange"
             >
             Hola {{ user.nombres }}!
             
