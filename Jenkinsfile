@@ -16,7 +16,7 @@ pipeline {
                             }
                         },
                         b: {
-                            dir("/var/lib/jenkins/workspace/memoria/sistema"){
+                            dir("/var/lib/jenkins/workspace/sistema"){
                                 sleep(5)//sh 'export NODE_OPTIONS=--max_old_space_size=8096'
                                 sh 'npm install'
                                 sh 'npm update vue-template-compiler'
