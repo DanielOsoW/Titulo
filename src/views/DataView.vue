@@ -71,6 +71,9 @@ export default {
     
   }),
   methods:{
+        sleep: async function(ms) {
+          return new Promise(resolve => setTimeout(resolve, ms));
+        },
         //Función asíncrona para consultar los datos
         getData: async function(){
           if (this.user==null){
@@ -185,6 +188,7 @@ export default {
           const workbook = XLSX.utils.book_new();
           const filename = "Data";
           XLSX.utils.book_append_sheet(workbook, data, filename);
+          this.sleep(2000);
           XLSX.writeFile(workbook, `${filename}.xlsx`);
         },
     },

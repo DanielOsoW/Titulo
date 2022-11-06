@@ -38,7 +38,8 @@
                     >Resolver Enunciado</v-btn>
                     </template>
                     <template v-slot:default="dialog">
-                        <v-card>
+                      <div v-if="loading==0">
+                          <v-card>
                             <v-toolbar
                             color="primary"
                             dark
@@ -55,7 +56,7 @@
 
                             <v-btn
                                 text
-                                @click="goToEnunciado(item.id)"
+                                @click="loading=1,goToEnunciado(item.id)"
                                 color="green"
                             >
                             
@@ -65,6 +66,16 @@
                             
                             </v-card-actions>
                         </v-card>
+                        </div>
+                        <div v-else class="text-center">
+                          <v-card>
+                            <v-progress-circular
+                              :size="50"
+                              color="primary"
+                              indeterminate
+                            ></v-progress-circular>
+                          </v-card>
+                        </div>
                     </template>
                 </v-dialog>
 
@@ -140,3 +151,8 @@ export default {
     }
 }
 </script>
+<style scoped>
+.v-progress-circular {
+  margin: 1rem;
+}
+</style>

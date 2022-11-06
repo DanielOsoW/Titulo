@@ -411,8 +411,32 @@ export default {
           var contador2 = 0;
           var iter2 = codigo.length;
           for(var j = 0; j < iter2; j++){
-            if(codigo[j] == '+' || codigo[j] == '-' || codigo[j] == '*' || codigo[j] == '/' || codigo[j] == '%'){
+            if(codigo[j] == '+' || codigo[j] == '-' || codigo[j] == '/' || codigo[j] == '%'){
               contador2 = contador2 + 1;
+            }
+            if(codigo[j] == '='){
+              if(codigo[j+1] == '='){
+                contador2 = contador2 + 1;
+                j = j + 1;
+              }
+              else{
+                contador2 = contador2 + 1;
+              }
+            }
+            if(codigo[j] == '*'){
+              if(codigo[j+1] == '*'){
+                contador2 = contador2 + 1;
+                j = j + 1;
+              }
+              else{
+                contador2 = contador2 + 1;
+              }
+            }
+            if(codigo[j] == '!'){
+              if(codigo[j+1] == '='){
+                contador2 = contador2 + 1;
+                j = j + 1;
+              }
             }
           }
           this.dataset.nro_operandos = contador2;
