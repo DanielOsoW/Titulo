@@ -78,10 +78,10 @@ export default {
 
           series3: [{
             name: 'Nº de éxitos',
-            data: 0
+            data: [0]
           }, {
             name: 'Nº de fallos',
-            data: 0
+            data: [0]
           }],
           chartOptions3: {
             chart: {
@@ -190,13 +190,14 @@ export default {
 
                 for(var l=0;l<largoJson;l++){
                     if(this.items[l].resultado == this.items[l].respuesta){
-                        this.series3[0].data = this.series3[0].data + 1;	
+                        this.series3[0].data[0] = this.series3[0].data[0] + 1;	
                     }
                     else{
-                        this.series3[1].data = this.series3[1].data + 1;
+                        this.series3[1].data[0] = this.series3[1].data[0] + 1;
                     }
                 }
-
+                this.series3[0].data[0] = this.series3[0].data[0] / (largoJson-1);
+                this.series3[1].data[0] = this.series3[1].data[0] / (largoJson-1);
                 this.chart3 = true;
               }
               
