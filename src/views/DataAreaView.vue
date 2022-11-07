@@ -196,8 +196,7 @@ export default {
                         this.series3[1].data[0] = this.series3[1].data[0] + 1;
                     }
                 }
-                this.series3[0].data[0] = this.series3[0].data[0] / (largoJson-1);
-                this.series3[1].data[0] = this.series3[1].data[0] / (largoJson-1);
+
                 this.chart3 = true;
               }
               
