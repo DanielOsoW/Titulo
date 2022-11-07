@@ -103,6 +103,7 @@ export default {
     resultado:0,
     drawer: false,
     group: null,
+    loading:0,
   }),
   methods:{
         //Función asíncrona para consultar los datos
