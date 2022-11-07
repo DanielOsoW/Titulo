@@ -197,7 +197,7 @@ export default {
                     }
                 }
                 this.series3[0].data[0] = this.series3[0].data[0] / largoJson;
-                this.series3[0].data[1] = this.series3[0].data[1] / largoJson;
+                this.series3[1].data[0] = this.series3[1].data[0] / largoJson;
                 this.chart3 = true;
               }
               
