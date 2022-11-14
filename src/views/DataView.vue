@@ -170,7 +170,7 @@ export default {
               "Nro Ediciones": this.datos[k].nro_ediciones,
               "Nro Compilaciones": this.datos[k].nro_compilaciones,
               "Nro Estructuras de Flujo": this.datos[k].nro_estrucflujo,
-              "Nro Operandos": this.datos[k].nro_operandos,
+              "Nro Operadores": this.datos[k].nro_operandos,
               "Solución": this.datos[k].solucion,
               "Resultado": this.datos[k].resultado,
               "Respuesta": this.datos[k].respuesta,
@@ -184,6 +184,7 @@ export default {
             };
 
           }
+          this.sleep(2000);
           let data = XLSX.utils.json_to_sheet(newArr);
           const workbook = XLSX.utils.book_new();
           const filename = "Data";
