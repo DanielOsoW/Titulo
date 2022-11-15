@@ -68,8 +68,6 @@ export default {
     resultado:0,
     drawer: false,
     group: null,
-    nombreCarrera: "",
-    nombreRol:"",
     
   }),
   methods:{
@@ -120,19 +118,21 @@ export default {
 
           for( var k = 0; k < this.datos.length; k++ ) {
             
+            var nombreRol = "";
+            var nombreCarrera = "";
 
             for(var i = 0; i < this.roles.length; i++){
               if(this.datos[k].rol == this.roles[i].id){
-                this.nombreRol = this.roles[i].nombre_rol;
+                nombreRol = this.roles[i].nombre_rol;
               }
             }
-            this.sleep(2000);
+            this.sleep(20000);
             for(var j = 0; j <this.carreras.length; j++){
               if(this.datos[k].carrera == this.carreras[j].id){
-                this.nombreCarrera = this.carreras[j].nombre_carrera;
+                nombreCarrera = this.carreras[j].nombre_carrera;
               }
             }
-            this.sleep(2000);
+            this.sleep(20000);
             var mental,fisico,tiempo,performance,esfuerzo,frustracion,result;
 
             for(var l = 0; l <this.nasa.length; l++){
@@ -146,16 +146,16 @@ export default {
                 result = this.nasa[l].result;
               }
             }
-            this.sleep(2000);
+            this.sleep(20000);
             newArr[k]= {
               "ID": this.datos[k].id,
               "ID Enunciado": this.datos[k].enunciado,
               "ID Usuario": this.datos[k].usuario,
               "Edad": this.datos[k].edad,
               "Sexo": this.datos[k].sexo,
-              "Rol": this.nombreRol,
+              "Rol": nombreRol,
               "Años de Experiencia Programando": this.datos[k].anos_experiencia,
-              "Carrera": this.nombreCarrera,
+              "Carrera": nombreCarrera,
               "Fecha Inicio": this.datos[k].fecha_inicio,
               "Fecha Término": this.datos[k].fecha_termino,
               "Nro Errores": this.datos[k].nro_errores,
