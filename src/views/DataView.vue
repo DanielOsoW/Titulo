@@ -68,6 +68,8 @@ export default {
     resultado:0,
     drawer: false,
     group: null,
+    nombreCarrera: "",
+    nombreRol:"",
     
   }),
   methods:{
@@ -118,18 +120,16 @@ export default {
 
           for( var k = 0; k < this.datos.length; k++ ) {
             
-            var nombreRol = "";
-            var nombreCarrera = "";
 
             for(var i = 0; i < this.roles.length; i++){
               if(this.datos[k].rol == this.roles[i].id){
-                nombreRol = this.roles[i].nombre_rol;
+                this.nombreRol = this.roles[i].nombre_rol;
               }
             }
             this.sleep(2000);
             for(var j = 0; j <this.carreras.length; j++){
               if(this.datos[k].carrera == this.carreras[j].id){
-                nombreCarrera = this.carreras[j].nombre_carrera;
+                this.nombreCarrera = this.carreras[j].nombre_carrera;
               }
             }
             this.sleep(2000);
@@ -153,9 +153,9 @@ export default {
               "ID Usuario": this.datos[k].usuario,
               "Edad": this.datos[k].edad,
               "Sexo": this.datos[k].sexo,
-              "Rol": nombreRol,
+              "Rol": this.nombreRol,
               "Años de Experiencia Programando": this.datos[k].anos_experiencia,
-              "Carrera": nombreCarrera,
+              "Carrera": this.nombreCarrera,
               "Fecha Inicio": this.datos[k].fecha_inicio,
               "Fecha Término": this.datos[k].fecha_termino,
               "Nro Errores": this.datos[k].nro_errores,
