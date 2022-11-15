@@ -126,13 +126,13 @@ export default {
                 nombreRol = this.roles[i].nombre_rol;
               }
             }
-
+            this.sleep(2000);
             for(var j = 0; j <this.carreras.length; j++){
               if(this.datos[k].carrera == this.carreras[j].id){
                 nombreCarrera = this.carreras[j].nombre_carrera;
               }
             }
-
+            this.sleep(2000);
             var mental,fisico,tiempo,performance,esfuerzo,frustracion,result;
 
             for(var l = 0; l <this.nasa.length; l++){
@@ -146,7 +146,7 @@ export default {
                 result = this.nasa[l].result;
               }
             }
-
+            this.sleep(2000);
             newArr[k]= {
               "ID": this.datos[k].id,
               "ID Enunciado": this.datos[k].enunciado,
